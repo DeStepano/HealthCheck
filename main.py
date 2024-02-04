@@ -8,6 +8,7 @@ from core.settings import settings
 
 async def main():
     bot = Bot(token=settings.bots.bot_token)
+    await bot.delete_webhook(drop_pending_updates=True)
     dp = Dispatcher()
     dp.message.register(start)
     try:
@@ -16,4 +17,5 @@ async def main():
         await bot.session.close()
 
 if __name__ == "__main__":
+    
     asyncio.run(main())
