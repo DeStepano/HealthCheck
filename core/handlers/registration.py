@@ -60,7 +60,7 @@ async def get_age(message: Message, state: FSMContext):
 @router.message(Form.sex, F.text.casefold().in_(["парень", "девушка"]))
 async def get_sex(message: Message, state: FSMContext):
     await state.update_data(sex=message.text)
-    await message.answer("Вы зарегестрировались!")
+    await message.answer("Вы зарегестрировались!", reply_markup=keyboards.main_kb)
     data = await state.get_data()
     await state.clear()
     
@@ -70,7 +70,7 @@ async def get_sex(message: Message, state: FSMContext):
     
     
     name, age, sex = data.values()
-    await message.answer(F"имя: {name} '\n' возраст: {age} '\n' пол: {sex}")
+    await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
     name='"'+name+'"'
     sex='"' + sex +'"'
     users = sl.connect('core/users.db')

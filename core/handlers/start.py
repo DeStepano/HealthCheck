@@ -31,4 +31,4 @@ async def start(message: Message):
         exits = cur.execute("SELECT name FROM users WHERE id=?", [id_user]).fetchone()
         cur.close()
         users.close()
-        await message.answer(F"Привет, {exits}!", reply_markup=keyboards.main_kb)
+        await message.answer(F"Привет, {exits[0]}!", reply_markup=keyboards.main_kb)
