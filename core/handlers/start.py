@@ -1,0 +1,34 @@
+import asyncio
+
+from aiogram import Bot, Dispatcher, F, Router
+from aiogram.types import Message
+from aiogram.filters import Command
+import sqlite3 as sl
+import logging
+
+from core.keyboards import keyboards
+
+logging.basicConfig(level=logging.INFO)
+
+router=Router()
+
+@router.message(Command("start"))
+async def start(message: Message):
+    id_user=message.from_user.id
+    users = sl.connect('core/users.db')
+    cur = users.cursor()
+    exists = cur.execute("SELECT 1 FROM users use WHERE id = ?", [id_user]).fetchone()
+    cur.close()
+    users.close()
+
+    if(not exists):
+        await message.answer("Привет, я бот, который... Чтобы пользоваться мной, необходимо зарегистрироваться!", reply_markup=keyboards.registration_kb)
+    else:
+        id_user=message.from_user.id
+        users = sl.connect('core/users.db')
+        cur = users.cursor()
+        # exists = cur.execute("FROM users use WHERE id = ?", [id_user]).fetchone()
+        exits = cur.execute("SELECT name FROM users WHERE id=?", [id_user]).fetchone()
+        cur.close()
+        users.close()
+        await message.answer(F"Привет, {exits}!", reply_markup=keyboards.main_kb)
