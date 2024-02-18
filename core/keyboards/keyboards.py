@@ -30,6 +30,22 @@ main_kb = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+
+setting_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Удалить аккаунт"),
+            KeyboardButton(text="Изменить данные")
+        ],
+        [
+            KeyboardButton(text="Главное меню")
+        ]
+    ],
+    resize_keyboard=True
+)
+
+
+
 delete_kb=ReplyKeyboardMarkup(
     keyboard=[
         []
