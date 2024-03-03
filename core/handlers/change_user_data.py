@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from core.keyboards import keyboards
-
+from aiogram.types import ReplyKeyboardRemove
 
 class Form(StatesGroup):
     new_name = State()
@@ -21,17 +21,17 @@ class Form(StatesGroup):
 router = Router()
 
 
-@router.message(F.text.lower() == "изменить данные")
+@router.message(Command("Изменить_данные"))
 async def change_user_data(message: Message, state: FSMContext):
     await state.set_state(Form.new_name)
-    await message.answer("Введите имя")
+    await message.answer("Введите имя", reply_markup=keyboards.empty_kb)
 
 
 @router.message(Form.new_name)
 async def get_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Form.new_age)
-    await message.answer("Введите возраст", reply_markup=keyboards.delete_kb)
+    await message.answer("Введите возраст")
 
 
 @router.message(Form.new_age)
@@ -72,3 +72,6 @@ async def get_sex(message: Message, state: FSMContext):
     users.close()
 
 
+@router.message(Command("/Главное меню"))
+async def insert_main_kb(message: Message):
+    message.answer("Главное меню", reply_markup=keyboards.setting_kb)

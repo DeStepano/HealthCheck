@@ -14,12 +14,14 @@ from core.keyboards import keyboards
 router = Router()
 
 
-@router.message(F.text.lower() == "удалить аккаунт")
+
+
+@router.message(Command("Удалить_аккаунт"))
 async def change_user_data(message: Message, state: FSMContext):
     await message.answer("Вы уверены?", reply_markup=keyboards.delete_kb)
 
 
-@router.message(F.text.lower() == "да")
+@router.message(Command("Точно_удалить"))
 async def change_user_data(message: Message, state: FSMContext):
     id_user = message.from_user.id
     users = sl.connect('core/users.db')
@@ -29,6 +31,6 @@ async def change_user_data(message: Message, state: FSMContext):
     users.commit()
     await message.answer("Успешно", reply_markup=keyboards.registration_kb)
 
-@router.message(F.text.lower() == "нет")
+@router.message(Command("Не_удалять"))
 async def change_user_data(message: Message, state: FSMContext):
-    await message.answer("Хорошо", reply_markup=keyboards.main_kb)
+    await message.answer("Хорошо", reply_markup=keyboards.setting_kb)

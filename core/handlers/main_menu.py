@@ -13,17 +13,17 @@ from core.keyboards import keyboards
 
 router = Router()
 
+@router.message(Command("Главное_меню"))
+async def insert_main_kb(message: Message):
+    await message.answer("Главное меню", reply_markup=keyboards.main_kb)
 
-@router.message(F.text.lower() == "настройки")
+
+@router.message(Command("Настройки"))
 async def settings(message: Message):
     await message.answer("настройки", reply_markup=keyboards.setting_kb)
 
 
-@router.message(F.text.lower() == "проверить анализы")
+@router.message(Command("Проверить_анализы"))
 async def settings(message: Message):
     await message.answer("Выберете нужное", reply_markup=keyboards.diagnostic_kb)
 
-
-@router.message(F.text.lower() == "болезнь 1")
-async def settings(message: Message):
-    await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)

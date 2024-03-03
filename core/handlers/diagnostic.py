@@ -18,20 +18,31 @@ dp = Dispatcher()
 class Form(StatesGroup):
     photo = State()
 
+global bot
 
-@router.message(F.text.lower() == "проверить анализы")
+@router.message(Command("Проверить_анализы"))
 async def settings(message: Message, state: FSMContext):
     await message.answer("Выберете нужное", reply_markup=keyboards.diagnostic_kb)
 
 
-@router.message(F.text.lower() == "болезнь 1")
+@router.message(Command("Болезнь_1"))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo)
     await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)
 
 
-@router.message(F.photo)
-async def photo_message(message: Message, state: FSMContext):
-    photo_date = message.photo[-1]
+@router.message(F.photo, Form.photo)
+async def photo_message(message: Message, state: FSMContext, bot: Bot):
+    await state.update_data(photo = message.photo[-1])
+    data = await state.get_data()
+    await state.clear()
+    await bot.download(
+        data['photo'],
+        destination=f"\sasha\health_checker\HealthCheck\{data['photo'].file_id}.jpg"
+    )
+    await message.answer("Фото получено")
 
-    await message.answer(f'{photo_date}')
+
+@router.message(Form.photo)
+async def incorrect_photo(message: Message):
+    await message.answer("Это не фото, отправте фото")

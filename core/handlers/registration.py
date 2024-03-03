@@ -19,7 +19,7 @@ class Form(StatesGroup):
 router=Router()
 
 
-@router.message(F.text.lower() == "зарегистрироваться")
+@router.message(Command("Зарегистрироваться"))
 async def registration(message: Message, state: FSMContext):
     id_user=message.from_user.id
     users = sl.connect('core/users.db')
@@ -40,7 +40,7 @@ async def registration(message: Message, state: FSMContext):
 async def get_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Form.age)
-    await message.answer("Введите возраст", reply_markup=keyboards.main_kb)
+    await message.answer("Введите возраст", reply_markup=keyboards.empty_kb)
 
 
 
