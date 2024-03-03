@@ -12,7 +12,7 @@ import sqlite3 as sl
 import core.handlers.start
 from core.config import TOKEN
 
-from core.handlers import registration, start, change_user_data, main_menu, delete_acc, diagnostic
+from core.handlers import registration, start, change_user_data, main_menu, delete_acc, diagnostic, second_check
 
 logging.basicConfig(level=logging.INFO)
 
@@ -27,7 +27,7 @@ async def main():
 
     bot=Bot(token=TOKEN)
     dp = Dispatcher()  
-    dp.include_routers(registration.router, start.router, change_user_data.router, main_menu.router, delete_acc.router, diagnostic.router)
+    dp.include_routers(registration.router, start.router, change_user_data.router, main_menu.router, delete_acc.router, diagnostic.router, second_check.router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 
