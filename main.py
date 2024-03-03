@@ -25,6 +25,13 @@ async def main():
                 	(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, sex TEXT)''')
     users.commit()
 
+    diagnoz = sl.connect('core/diagnoz.db')
+    cursor2 = diagnoz.cursor()
+    cursor2.execute('''CREATE TABLE IF NOT EXISTS diagnoz (id INTEGER PRIMARY KEY, age INTEGER, sex TEXT, 
+    hypertension INTEGER, heart_disease INTEGER, ever_married INTEGER, urban_dweller INTEGER, avg_glucose_level 
+    INTEGER, bmi INTEGER, smoking_status INTEGER)''')
+    diagnoz.commit()
+    
     bot=Bot(token=TOKEN)
     dp = Dispatcher()  
     dp.include_routers(registration.router, start.router, change_user_data.router, main_menu.router, delete_acc.router, diagnostic.router, second_check.router)

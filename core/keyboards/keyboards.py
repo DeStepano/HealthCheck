@@ -49,6 +49,26 @@ diagnostic_kb = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+smoke_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Курю"),
+            KeyboardButton(text="Курил раньше"),
+            KeyboardButton(text="Никогда не курил")
+        ],
+    ],
+    resize_keyboard=True
+)
+
+survey_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Есть"),
+            KeyboardButton(text="Нет")
+        ],
+    ],
+    resize_keyboard=True
+)
 
 
 setting_kb = ReplyKeyboardMarkup(
@@ -87,4 +107,18 @@ sex_kb = ReplyKeyboardMarkup(
 )
 
 empty_kb = ReplyKeyboardRemove()
+
+
+
+from aiogram.types import (
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    KeyboardButtonPollType
+)
+
+
+
+
 
