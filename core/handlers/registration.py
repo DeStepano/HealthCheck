@@ -8,7 +8,7 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 
 class Form(StatesGroup):
@@ -18,7 +18,7 @@ class Form(StatesGroup):
 
 router=Router()
 
-@router.message(Command("Зарегистрироваться"))
+@router.message(Command("Зарегистрироваться"), StateFilter(None))
 async def registration(message: Message, state: FSMContext):
     id_user=message.from_user.id
     users = sl.connect('core/users.db')

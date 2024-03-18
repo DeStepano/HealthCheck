@@ -8,7 +8,7 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 
 
@@ -25,7 +25,7 @@ class Form2(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Болезнь_3"))
+@router.message(Command("Болезнь_3"), StateFilter(None))
 async def get_sex(message: Message, state: FSMContext):
     await state.set_state(Form2.hypertension)
     await message.answer("Есть ли у Вас гипертония?", reply_markup=keyboards.survey_kb)

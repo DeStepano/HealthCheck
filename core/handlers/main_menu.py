@@ -8,14 +8,19 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 
 router = Router()
 
 @router.message(Command("Главное_меню"))
-async def insert_main_kb(message: Message):
-    await message.answer("Главное меню", reply_markup=keyboards.main_kb)
+@router.message(F.text.lower() == "отмена")
+async def cmd_cancel(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer(
+        text="Главное меню",
+        reply_markup=keyboards.main_kb
+    )
 
 
 @router.message(Command("Настройки"))

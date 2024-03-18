@@ -8,7 +8,7 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 
 router = Router()
@@ -20,12 +20,12 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Проверить_анализы"))
-async def settings(message: Message, state: FSMContext):
-    await message.answer("Выберете нужное", reply_markup=keyboards.diagnostic_kb)
+# @router.message(Command("Проверить_анализы"))
+# async def settings(message: Message, state: FSMContext):
+#     await message.answer("Выберете нужное", reply_markup=keyboards.diagnostic_kb)
 
 
-@router.message(Command("Болезнь_1"))
+@router.message(Command("Болезнь_1"), StateFilter(None))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo)
     await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)

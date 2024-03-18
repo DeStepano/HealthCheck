@@ -9,11 +9,11 @@ import uuid
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from aiogram.types import ReplyKeyboardRemove
 
-from magic_filter import F
+from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 
@@ -83,7 +83,7 @@ class Form(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Болезнь_2"))
+@router.message(Command("Болезнь_2"), StateFilter(None))
 async def change_user_data(message: Message, state: FSMContext):
     await state.set_state(Form.cp)
     await message.answer("Как вы бы описали тип боли в груди: Выберете значение:", reply_markup=keyboards.get_keyboard_cp())
@@ -119,7 +119,7 @@ async def set_trtbps(message: Message, state: FSMContext):
         message.answer("Введите число заново:")
 
 
-@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_fbs"))
+@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_fbs"), Form.fbs)
 async def set_cp(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: State):
     await state.update_data(fbs=callback_data.value)
     await state.set_state(Form.restecg)
@@ -127,7 +127,7 @@ async def set_cp(callback: CallbackQuery, callback_data: keyboards.NumbersCallba
     await callback.message.answer("Результаты электрокардиографии в покое:", reply_markup=keyboards.get_keyboard_restech())
 
 
-@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_restecg"))
+@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_restecg"), Form.restecg)
 async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
     await state.update_data(restecg=callback_data.value)
     await state.set_state(Form.thalach)
@@ -144,21 +144,21 @@ async def set_trtbps(message: Message, state: FSMContext):
         message.answer("Введите число заново:")
 
 
-@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_exng"))
+@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_exng"), Form.exng)
 async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
     await state.update_data(exng=callback_data.value)
     await state.set_state(Form.slope)
     await callback.message.answer("Наклон пикового сегмента ST при нагрузке:", reply_markup=keyboards.get_keyboard_slope())
 
 
-@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_slope"))
+@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_slope"), Form.slope)
 async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
     await state.update_data(slope=callback_data.value)
     await state.set_state(Form.ca)
     await callback.message.answer("Количество крупных сосудов:", reply_markup=keyboards.get_keyboard_ca())
 
 
-@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_ca"))
+@router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_ca"), Form.ca)
 async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
     await state.update_data(slope=callback_data.value)
     data = await state.get_data()

@@ -8,7 +8,7 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from aiogram.types import ReplyKeyboardRemove
 
@@ -21,7 +21,7 @@ class Form(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Изменить_данные"))
+@router.message(Command("Изменить_данные"), StateFilter(None))
 async def change_user_data(message: Message, state: FSMContext):
     await state.set_state(Form.new_name)
     await message.answer("Введите имя", reply_markup=keyboards.empty_kb)
