@@ -68,7 +68,7 @@ smoke_kb = ReplyKeyboardMarkup(
 survey_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Есть"),
+            KeyboardButton(text="Да"),
             KeyboardButton(text="Нет")
         ],
     ],

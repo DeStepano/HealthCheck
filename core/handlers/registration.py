@@ -18,7 +18,6 @@ class Form(StatesGroup):
 
 router=Router()
 
-
 @router.message(Command("Зарегистрироваться"))
 async def registration(message: Message, state: FSMContext):
     id_user=message.from_user.id
@@ -32,8 +31,6 @@ async def registration(message: Message, state: FSMContext):
     else:
         await state.set_state(Form.name)
         await message.answer("Введите имя")
-        
-
 
 
 @router.message(Form.name)
@@ -41,8 +38,6 @@ async def get_name(message: Message, state: FSMContext):
     await state.update_data(name=message.text)
     await state.set_state(Form.age)
     await message.answer("Введите возраст", reply_markup=keyboards.empty_kb)
-
-
 
 
 @router.message(Form.age)
@@ -53,8 +48,6 @@ async def get_age(message: Message, state: FSMContext):
         await message.answer("Введите ваш пол", reply_markup=keyboards.sex_kb)
     else:
         await message.answer("Введите возраст заново")
-
-
 
 
 @router.message(Form.sex, F.text.casefold().in_(["парень", "девушка"]))
@@ -76,14 +69,10 @@ async def get_sex(message: Message, state: FSMContext):
     users = sl.connect('core/users.db')
     id_user = message.from_user.id
     cursor = users.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                	(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)''')
-    users.commit()
     cursor.execute(f'INSERT INTO users (id, name, age, sex) VALUES ({id_user}, {name}, {age}, {sex})')
     users.commit()
     cursor.close()
     users.close()
-
 
 
 @router.message(Form.sex)
