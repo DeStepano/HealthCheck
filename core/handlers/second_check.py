@@ -50,12 +50,12 @@ class RpcClient(object):
         if self.corr_id == props.correlation_id:
             self.response = body
 
-    def call(self, n):
+    def call(self, n, name):
         self.response = None
         self.corr_id = str(uuid.uuid4())
         self.channel.basic_publish(
             exchange='',
-            routing_key='rpc_queue',
+            routing_key=name,
             properties=pika.BasicProperties(
                 reply_to=self.callback_queue,
                 correlation_id=self.corr_id,
@@ -93,10 +93,8 @@ async def change_user_data(message: Message, state: FSMContext):
 async def set_cp(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
     await state.update_data(cp=callback_data.value)
     await state.set_state(Form.trtbps)
-    # await callback.message.edit_reply_markup(reply_markup=None)
     await callback.message.edit_text(f"Как вы бы описали тип боли в груди: {callback_data.name}")
     await callback.message.answer("Введите кровяное давление:")
-    # await callback.message.delete()
 
 
 @router.message(Form.trtbps)
@@ -160,13 +158,22 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
 
 @router.callback_query(keyboards.NumbersCallbackFactory.filter(F.action == "set_ca"), Form.ca)
 async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersCallbackFactory, state: FSMContext):
-    await state.update_data(slope=callback_data.value)
+    await state.update_data(ca=callback_data.value)
     data = await state.get_data()
     message = json.dumps(data)
     await callback.message.answer("Начата обработка", reply_markup=keyboards.main_kb)
-    response = rpc.call(message)
-    response = json.loads(response)
-    print(response)
+    response = json.loads(rpc.call(message, 'rpc_queue'))
+    data = list(data.values())
+    id_user = callback.from_user.id
+    data.append(response)
+    data.append(id_user)
+    data = tuple(data)
+    users = sl.connect('core/users.db')
+    cursor = users.cursor()
+    cursor.execute('UPDATE users SET cp = ?, trtbps = ?, chol = ?, fbs = ?, restecg = ?, thalach = ?, exng = ?, slope = ?, ca = ?, test1_result = ?  WHERE id = ?', data)
+    users.commit()
+    cursor.close()
+    users.close()
 
     await state.clear()
     await callback.message.answer(f"Вы прошли тест! Ваши данные:{response}")

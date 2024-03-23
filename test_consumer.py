@@ -11,9 +11,9 @@ channel = connection.channel()
 channel.queue_declare(queue='rpc_queue')
 
 def func(a):
-    s = ""
+    s = 0
     for i in a.keys():
-        s = s+" "+str(a[i])
+        s =s+int(a[i])
     time.sleep(2)
     return s
 

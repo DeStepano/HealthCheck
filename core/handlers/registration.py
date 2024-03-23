@@ -3,13 +3,14 @@ from aiogram.fsm.context import FSMContext
 
 import logging
 import sqlite3 as sl
-
+import hashlib
 import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
+from core.logic import get_hash_id
 
 class Form(StatesGroup):
     name = State()
@@ -67,9 +68,10 @@ async def get_sex(message: Message, state: FSMContext):
     name='"'+name+'"'
     sex='"' + sex +'"'
     users = sl.connect('core/users.db')
-    id_user = message.from_user.id
+    user_id = message.from_user.id
+    get_hash_id(user_id)
     cursor = users.cursor()
-    cursor.execute(f'INSERT INTO users (id, name, age, sex) VALUES ({id_user}, {name}, {age}, {sex})')
+    cursor.execute(f'INSERT INTO users (id, name, age, sex) VALUES ({user_id}, {name}, {age}, {sex})')
     users.commit()
     cursor.close()
     users.close()

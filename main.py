@@ -12,7 +12,8 @@ import sqlite3 as sl
 import core.handlers.start
 from core.config import TOKEN
 
-from core.handlers import registration, start, change_user_data, main_menu, delete_acc, diagnostic, second_check, first_check
+from core.handlers import registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, diagnostic
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -23,7 +24,7 @@ async def main():
     cursor = users.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users
                 	(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, sex TEXT, hypertension INTEGER, heart_disease INTEGER, ever_married INTEGER, urban_dweller INTEGER, avg_glucose_level 
-    INTEGER, bmi INTEGER, smoking_status INTEGER, cp INTEGER, trtbps INTEGER, chol INTEGER, fbs INTEGER, restecg INTEGER, thalach INTEGER, exng INTEGER, slope INTEGER, ca INTEGER)''')
+    INTEGER, bmi INTEGER, smoking_status INTEGER, cp INTEGER, trtbps INTEGER, chol INTEGER, fbs INTEGER, restecg INTEGER, thalach INTEGER, exng INTEGER, slope INTEGER, ca INTEGER, brain_photo TEXT, brain_result INTEGER, test1_result INTEGER)''')
     users.commit()
 
 
