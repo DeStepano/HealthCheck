@@ -47,7 +47,7 @@ async def main():
     
     bot=Bot(token=TOKEN)
     dp = Dispatcher()  
-    dp.include_routers(registration.router, start.router, change_user_data.router, main_menu.router, delete_acc.router, diagnostic.router, second_check.router, first_check.router)
+    dp.include_routers(start.router, registration.router, change_user_data.router, main_menu.router, delete_acc.router, diagnostic.router, second_check.router, first_check.router)
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 

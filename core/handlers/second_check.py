@@ -12,7 +12,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from aiogram.types import ReplyKeyboardRemove
-
+from core.logic import get_hash
 from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
@@ -164,7 +164,7 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
     await callback.message.answer("Начата обработка", reply_markup=keyboards.main_kb)
     response = json.loads(rpc.call(message, 'rpc_queue'))
     data = list(data.values())
-    id_user = callback.from_user.id
+    id_user = await get_hash(callback.from_user.id)
     data.append(response)
     data.append(id_user)
     data = tuple(data)

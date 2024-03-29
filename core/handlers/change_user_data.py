@@ -12,6 +12,8 @@ from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from aiogram.types import ReplyKeyboardRemove
 
+from core.logic import get_hash
+
 class Form(StatesGroup):
     new_name = State()
     new_age = State()
@@ -52,7 +54,7 @@ async def get_sex(message: Message, state: FSMContext):
     data = await state.get_data()
     await state.clear()
 
-    id_user = message.from_user.id
+    user_id = await get_hash(message.from_user.id)
 
     formatted_text = []
     for key, value in data.items():
@@ -62,11 +64,11 @@ async def get_sex(message: Message, state: FSMContext):
     await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
 
     users = sl.connect('core/users.db')
-    id_user = message.from_user.id
+    # id_user = message.from_user.id
     cursor = users.cursor()
-    cursor.execute('UPDATE users SET name = ? WHERE id = ?', (name, id_user))
-    cursor.execute('UPDATE users SET age = ? WHERE id = ?', (age, id_user))
-    cursor.execute('UPDATE users SET sex = ? WHERE id = ?', (sex, id_user))
+    cursor.execute('UPDATE users SET name = ? WHERE id = ?', (name, user_id))
+    cursor.execute('UPDATE users SET age = ? WHERE id = ?', (age, user_id))
+    cursor.execute('UPDATE users SET sex = ? WHERE id = ?', (sex, user_id))
     users.commit()
     cursor.close()
     users.close()

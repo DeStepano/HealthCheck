@@ -10,10 +10,8 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from core.keyboards import keyboards
-
+from core.logic import get_hash
 router = Router()
-
-
 
 
 @router.message(Command("Удалить_аккаунт"))
@@ -23,7 +21,7 @@ async def change_user_data(message: Message, state: FSMContext):
 
 @router.message(Command("Точно_удалить"))
 async def change_user_data(message: Message, state: FSMContext):
-    id_user = message.from_user.id
+    id_user = await get_hash(message.from_user.id)
     users = sl.connect('core/users.db')
     cursor = users.cursor()
     cursor.execute("DELETE FROM users WHERE id = ?", (id_user,))

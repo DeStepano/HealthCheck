@@ -1,19 +1,25 @@
 import hashlib
+import sqlite3 as sl
+import asyncio
 
-def get_hash_id(user_id: int) -> str:
-    
-    # s1 = str(hashlib.sha256(str(user_id).encode()).hexdigest())
-    s2 = int(hashlib.sha1(str(user_id).encode()).hexdigest(),16)
-    print(s2%10000000000)
-    # s3 = str(hashlib.sha224(str(user_id).encode()).hexdigest())
-    # s4 = str(hashlib.sha384(str(user_id).encode()).hexdigest())
-    # s5 = str(hashlib.sha512(str(user_id).encode()).hexdigest())
-    # s6 = str(hashlib.blake2b(str(user_id).encode()).hexdigest())
-    # s7 = str(hashlib.blake2s(str(user_id).encode()).hexdigest())
-    # print(s1)
-    print(s2)
-    # print(s3)
-    # print(s4)
-    # print(s5)
-    # print(s6)
-    # print(s7)
+
+async def get_hash(key: int) -> str:
+    print((int(hashlib.sha256(str(key).encode()).hexdigest(),16)))
+    # print(len(str(int(hashlib.sha256(str(key).encode()).hexdigest(),16))))
+    return (int(hashlib.sha256(str(key).encode()).hexdigest(),16))%1000000000
+
+
+# async def get_user(primary_key: int, additional_key: str):
+#     users = sl.connect('core/users.db')
+#     cursor = users.cursor()
+#     exists = cursor.execute("SELECT 1 FROM users use WHERE id = ?", [primary_key]).fetchone()
+#     print(exists)
+#     if not exists:
+#         return False
+#     additional_key_user = cursor.execute("SELECT additional_key FROM users WHERE id=?", [primary_key]).fetchone()
+#     if additional_key_user == additional_key:
+#         return primary_key
+#     return get_user(get_hash(primary_key))
+
+
+

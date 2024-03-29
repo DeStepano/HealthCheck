@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from core.logic import get_hash_id
+from core.logic import get_hash
 
 class Form(StatesGroup):
     name = State()
@@ -21,7 +21,7 @@ router=Router()
 
 @router.message(Command("Зарегистрироваться"), StateFilter(None))
 async def registration(message: Message, state: FSMContext):
-    id_user=message.from_user.id
+    id_user= await get_hash(message.from_user.id)
     users = sl.connect('core/users.db')
     cur = users.cursor()
     exists = cur.execute("SELECT 1 FROM users use WHERE id = ?", [id_user]).fetchone()
@@ -62,14 +62,13 @@ async def get_sex(message: Message, state: FSMContext):
     for key, value in data.items():
         formatted_text.append(f"{key}: {value}")
     
-    
     name, age, sex = data.values()
     await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
     name='"'+name+'"'
     sex='"' + sex +'"'
     users = sl.connect('core/users.db')
-    user_id = message.from_user.id
-    get_hash_id(user_id)
+    user_id =await get_hash(message.from_user.id)
+
     cursor = users.cursor()
     cursor.execute(f'INSERT INTO users (id, name, age, sex) VALUES ({user_id}, {name}, {age}, {sex})')
     users.commit()

@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-
+from core.logic import get_hash
 router = Router()
 
 dp = Dispatcher()
@@ -29,7 +29,7 @@ async def settings(message: Message, state: FSMContext):
 @router.message(F.photo, Form.photo)
 async def photo_message(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(photo = message.photo[-1])
-    user_id = message.from_user.id
+    user_id = await get_hash(message.from_user.id)
     data = await state.get_data()
     await state.clear()
     path = f"/home/sasha/health_checker/HealthCheck/images/{data['photo'].file_id + str(uuid.uuid4())}.jpg"
