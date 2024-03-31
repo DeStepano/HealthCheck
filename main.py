@@ -27,23 +27,6 @@ async def main():
     INTEGER, bmi INTEGER, smoking_status INTEGER, cp INTEGER, trtbps INTEGER, chol INTEGER, fbs INTEGER, restecg INTEGER, thalach INTEGER, exng INTEGER, slope INTEGER, ca INTEGER, brain_photo TEXT, brain_result INTEGER, test1_result INTEGER)''')
     users.commit()
 
-
-    #cp = State()
-    # trtbps = State()
-    # chol = State()
-    # fbs = State()
-    # restecg = State()
-    # thalach = State()
-    # exng = State()
-    # slope = State()
-    # ca = State()
-
-    # diagnoz = sl.connect('core/diagnoz.db')
-    # cursor2 = diagnoz.cursor()
-    # cursor2.execute('''CREATE TABLE IF NOT EXISTS diagnoz (id INTEGER PRIMARY KEY, age INTEGER, sex TEXT, 
-    # hypertension INTEGER, heart_disease INTEGER, ever_married INTEGER, urban_dweller INTEGER, avg_glucose_level 
-    # INTEGER, bmi INTEGER, smoking_status INTEGER)''')
-    # diagnoz.commit()
     
     bot=Bot(token=TOKEN)
     dp = Dispatcher()  

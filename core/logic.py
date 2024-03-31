@@ -1,11 +1,10 @@
 import hashlib
 import sqlite3 as sl
 import asyncio
-
+import pika
+import uuid
 
 async def get_hash(key: int) -> str:
-    print((int(hashlib.sha256(str(key).encode()).hexdigest(),16)))
-    # print(len(str(int(hashlib.sha256(str(key).encode()).hexdigest(),16))))
     return (int(hashlib.sha256(str(key).encode()).hexdigest(),16))%1000000000
 
 
@@ -20,6 +19,4 @@ async def get_hash(key: int) -> str:
 #     if additional_key_user == additional_key:
 #         return primary_key
 #     return get_user(get_hash(primary_key))
-
-
 

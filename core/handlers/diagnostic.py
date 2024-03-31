@@ -11,6 +11,11 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from core.logic import get_hash
+from core.rcp_client import RcpClient
+import base64
+import json
+from PIL import Image
+import io
 router = Router()
 
 dp = Dispatcher()
@@ -43,7 +48,13 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     users.commit()
     cursor.close()
     users.close()
-    await message.answer("Фото получено")
+    file_path = await bot.get_file(data['photo'].file_id)
+    photo_binary_data = await bot.download_file(file_path.file_path)
+    photo_binary_data = photo_binary_data.read()
+    encoded_data = base64.b64encode(photo_binary_data)
+    await message.answer("Фото получено. начат анализ...")
+    result = json.loads(RcpClient.call(encoded_data, 'brain_queue'))
+    await message.answer(f"Ваш результат: {result}")
 
 
 @router.message(Form.photo)

@@ -117,5 +117,3 @@ async def get_age(message: Message, state: FSMContext):
     await message.answer(f"Тест пройден! Ваши данные: \nГипертнония: {hypertension} \nБолезни сердца: {heart_disease} \nБрак: {ever_married} \nУровень глюкозы: {avg_glucose_level} \nИндекс массы тела: {bmi} \nКурение: {smoking_status}", reply_markup=keyboards.main_kb
                            )
     #тут дальше будет что-то разумное, чтобы передать данные алгоритму мл и сохранить в бдшк
-
-

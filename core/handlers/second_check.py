@@ -3,9 +3,8 @@ from aiogram.fsm.context import FSMContext
 import json
 import logging
 import sqlite3 as sl
-import pika
 import asyncio
-import uuid
+
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
@@ -17,6 +16,8 @@ from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 
+from core.rcp_client import RcpClient
+
 from aiogram.types import(
     ReplyKeyboardMarkup,
     KeyboardButton,
@@ -26,47 +27,6 @@ from aiogram.types import(
     ReplyKeyboardRemove,
     CallbackQuery
 )
-
-
-class RpcClient(object):
-    def __init__(self):
-        self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
-
-        self.channel = self.connection.channel()
-
-        result = self.channel.queue_declare(queue='', exclusive=True)
-        self.callback_queue = result.method.queue
-
-        self.channel.basic_consume(
-            queue=self.callback_queue,
-            on_message_callback=self.on_response,
-            auto_ack=True)
-
-        self.response = None
-        self.corr_id = None
-
-    def on_response(self, ch, method, props, body):
-        if self.corr_id == props.correlation_id:
-            self.response = body
-
-    def call(self, n, name):
-        self.response = None
-        self.corr_id = str(uuid.uuid4())
-        self.channel.basic_publish(
-            exchange='',
-            routing_key=name,
-            properties=pika.BasicProperties(
-                reply_to=self.callback_queue,
-                correlation_id=self.corr_id,
-            ),
-            body=str(n))
-        while self.response is None:
-            self.connection.process_data_events(time_limit=None)
-        return self.response
-
-
-rpc = RpcClient()
 
 
 class Form(StatesGroup):
@@ -162,7 +122,7 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
     data = await state.get_data()
     message = json.dumps(data)
     await callback.message.answer("Начата обработка", reply_markup=keyboards.main_kb)
-    response = json.loads(rpc.call(message, 'rpc_queue'))
+    response = json.loads(RcpClient.call(message, 'rpc_queue'))
     data = list(data.values())
     id_user = await get_hash(callback.from_user.id)
     data.append(response)
