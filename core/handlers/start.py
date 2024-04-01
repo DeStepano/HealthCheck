@@ -6,7 +6,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 import sqlite3 as sl
 import logging
-from core.logic import get_hash
+from core.hash import get_hash
 from core.keyboards import keyboards
 logging.basicConfig(level=logging.INFO)
 

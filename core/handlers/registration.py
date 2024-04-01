@@ -10,7 +10,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from core.logic import get_hash
+from core.hash import get_hash
 
 class Form(StatesGroup):
     name = State()

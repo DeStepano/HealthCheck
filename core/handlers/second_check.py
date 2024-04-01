@@ -4,27 +4,19 @@ import json
 import logging
 import sqlite3 as sl
 import asyncio
-
-
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from aiogram.types import ReplyKeyboardRemove
-from core.logic import get_hash
+from core.hash import get_hash
 from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
-
+from core.config import config
 from core.rcp_client import RcpClient
 
 from aiogram.types import(
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    KeyboardButtonPollType,
-    ReplyKeyboardRemove,
     CallbackQuery
 )
 
@@ -122,7 +114,7 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
     data = await state.get_data()
     message = json.dumps(data)
     await callback.message.answer("Начата обработка", reply_markup=keyboards.main_kb)
-    response = json.loads(RcpClient.call(message, 'rpc_queue'))
+    response = json.loads(RcpClient.call(message, config.second_check_queue))
     data = list(data.values())
     id_user = await get_hash(callback.from_user.id)
     data.append(response)
@@ -130,7 +122,7 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
     data = tuple(data)
     users = sl.connect('core/users.db')
     cursor = users.cursor()
-    cursor.execute('UPDATE users SET cp = ?, trtbps = ?, chol = ?, fbs = ?, restecg = ?, thalach = ?, exng = ?, slope = ?, ca = ?, test1_result = ?  WHERE id = ?', data)
+    cursor.execute('UPDATE users SET cp = ?, trtbps = ?, chol = ?, fbs = ?, restecg = ?, thalach = ?, exng = ?, slope = ?, ca = ?, second_check_result = ?  WHERE id = ?', data)
     users.commit()
     cursor.close()
     users.close()

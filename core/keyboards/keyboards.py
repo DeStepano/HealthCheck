@@ -6,11 +6,11 @@ from aiogram.types import(
     KeyboardButtonPollType,
     ReplyKeyboardRemove
 )
-
 from magic_filter import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 
 registration_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -21,6 +21,7 @@ registration_kb = ReplyKeyboardMarkup(
     resize_keyboard=True,
     one_time_keyboard=True,
 )
+
 
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -36,6 +37,7 @@ main_kb = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
 
 diagnostic_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -53,6 +55,7 @@ diagnostic_kb = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
 
 smoke_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -90,7 +93,6 @@ setting_kb = ReplyKeyboardMarkup(
 )
 
 
-
 delete_kb=ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -99,6 +101,7 @@ delete_kb=ReplyKeyboardMarkup(
         ]
     ]
 )
+
 
 sex_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -111,18 +114,8 @@ sex_kb = ReplyKeyboardMarkup(
     one_time_keyboard=True
 )
 
+
 empty_kb = ReplyKeyboardRemove()
-
-
-
-from aiogram.types import (
-    ReplyKeyboardMarkup,
-    KeyboardButton,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    KeyboardButtonPollType
-)
-
 
 
 class NumbersCallbackFactory(CallbackData, prefix="fabnum"):
@@ -145,10 +138,8 @@ def get_keyboard_cp():
     builder.button(
         text="Бессимптомно", callback_data=NumbersCallbackFactory(action="set_cp", value=3, name="Бессимптомно")
     )
-    # Выравниваем кнопки по 4 в ряд, чтобы получилось 4 + 1
     builder.adjust(2)
     return builder.as_markup()
-
 
 
 def get_keyboard_fbs():
@@ -161,7 +152,6 @@ def get_keyboard_fbs():
     )
     builder.adjust(2)
     return builder.as_markup()
-
 
 
 def get_keyboard_restech():
@@ -179,14 +169,13 @@ def get_keyboard_restech():
     return builder.as_markup()
 
 
-
 def get_keyboard_exng():
     builder = InlineKeyboardBuilder()
     builder.button(
         text="Есть", callback_data=NumbersCallbackFactory(action="set_exng", value=0, name = "Есть")
     )
     builder.button(
-        text="Нетю)", callback_data=NumbersCallbackFactory(action="set_exng", value=1, name = "Нетю" )
+        text="Нет", callback_data=NumbersCallbackFactory(action="set_exng", value=1, name = "Нет" )
     )
 
     builder.adjust(1)
@@ -206,8 +195,6 @@ def get_keyboard_slope():
     )
     builder.adjust(1)
     return builder.as_markup()
-
-
 
 
 def get_keyboard_ca():

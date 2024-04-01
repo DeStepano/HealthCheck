@@ -1,18 +1,12 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-
-import logging
 import sqlite3 as sl
-
 import asyncio
-
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from aiogram.types import ReplyKeyboardRemove
-
-from core.logic import get_hash
+from core.hash import get_hash
 
 class Form(StatesGroup):
     new_name = State()
@@ -49,22 +43,19 @@ async def get_age(message: Message, state: FSMContext):
 @router.message(Form.new_sex, F.text.casefold().in_(["парень", "девушка"]))
 async def get_sex(message: Message, state: FSMContext):
     await state.update_data(sex=message.text)
-
     await message.answer("Данные изменены", reply_markup=keyboards.main_kb)
     data = await state.get_data()
     await state.clear()
 
     user_id = await get_hash(message.from_user.id)
-
     formatted_text = []
     for key, value in data.items():
         formatted_text.append(f"{key}: {value}")
 
     name, age, sex = data.values()
+    
     await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
-
     users = sl.connect('core/users.db')
-    # id_user = message.from_user.id
     cursor = users.cursor()
     cursor.execute('UPDATE users SET name = ? WHERE id = ?', (name, user_id))
     cursor.execute('UPDATE users SET age = ? WHERE id = ?', (age, user_id))

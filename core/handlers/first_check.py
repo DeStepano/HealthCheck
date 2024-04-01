@@ -10,7 +10,10 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-
+import json
+from core.rcp_client import RcpClient
+from core.config import config
+from core.hash import get_hash
 
 class Form2(StatesGroup):
     hypertension = State()
@@ -106,14 +109,26 @@ async def get_age(message: Message, state: FSMContext):
     elif text == "никогда не курил":
         await state.update_data(smoking_status=0)
 
+    id_user = await get_hash(message.from_user.id)
     data = await state.get_data()
     await state.clear()
-
-    formatted_text = []
-    for key, value in data.items():
-        formatted_text.append(f"{key}: {value}")
-    print(data)
-    hypertension, heart_disease, ever_married, urban_dweller, avg_glucose_level, bmi, smoking_status = data.values()
-    await message.answer(f"Тест пройден! Ваши данные: \nГипертнония: {hypertension} \nБолезни сердца: {heart_disease} \nБрак: {ever_married} \nУровень глюкозы: {avg_glucose_level} \nИндекс массы тела: {bmi} \nКурение: {smoking_status}", reply_markup=keyboards.main_kb
-                           )
-    #тут дальше будет что-то разумное, чтобы передать данные алгоритму мл и сохранить в бдшк
+    data = list(data.values())
+    data.append(response)
+    data.append(id_user)
+    data = tuple(data)
+    response = json.loads(RcpClient.call(message, config.first_check_queue))
+    users = sl.connect('core/users.db')
+    cursor = users.cursor()
+    cursor.execute('''UPDATE users SET hypertension = ?,
+                    heart_disease = ?,
+                    ever_married = ?,
+                    urban_dweller = ?,
+                    avg_glucose_level = ?,
+                    bmi = ?,
+                    smoking_status = ?,
+                    first_check_result
+                    WHERE id = ?''', data)
+    users.commit()
+    cursor.close()
+    users.close()
+    

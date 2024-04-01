@@ -1,10 +1,11 @@
 import uuid
 import pika
+from core.config import config
 
 class RpcClient(object):
     def __init__(self):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host='localhost'))
+            pika.ConnectionParameters(host=config.host))
 
         self.channel = self.connection.channel()
 

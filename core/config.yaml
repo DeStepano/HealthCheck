@@ -1,0 +1,9 @@
+TOKEN: 6784935190:AAGjACc8mOkEzAd-RRi6R0j7J_Uq1dYApqs
+
+rcp_client:
+  host: localhost
+  queues:
+    brain_queue: brain_queue
+    xray_queue: xray_queue
+    first_check_queue: first_check
+    second_check_queue: second_check
