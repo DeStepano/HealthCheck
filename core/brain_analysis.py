@@ -7,6 +7,8 @@ import io
 import base64
 from config import config
 import torch
+import torchvision.transforms as transforms
+from torch.autograd import Variable
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.host))
@@ -15,18 +17,38 @@ channel = connection.channel()
 
 channel.queue_declare(queue=config.brain_analysis_queue)
 
-# model = torch.load('ml/TumorClassifier.model')
+model = torch.load('ml/best_checkpoint.model', map_location=torch.device('cpu'))
 
 def brain_analysis(image):
-    time.sleep(3)
-    response = "Обнаружена аномалия. Рекомендуем обратиться к специалисту"
-    return response
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    data_transforms = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize([0.5,0.5,0.5], 
+                        [0.5,0.5,0.5])
+])
+    image = data_transforms(image)
+    image = image.unsqueeze(0)
+    model.eval()
+    if torch.cuda.is_available():
+            images=Variable(images.cuda())
+    with torch.no_grad():
+        output = model(image)
+        print(output)
+        _,prediction=torch.max(output.data,1)
+        print(prediction)
+    return 1
 
 def on_request(ch, method, props, body):
     body = body[2:-1]
     decoded_data = base64.b64decode(body)
     image = Image.open(io.BytesIO(decoded_data))
-    response = json.dumps(brain_analysis(image))
+    res = brain_analysis(image)
+    response = ""
+    if res>0.5:
+        response = json.dumps("Обнаружена аномалия")
+    else:
+        response = json.dumps("Анломалий не обнаружено")
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
