@@ -11,7 +11,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 import json
-from core.rcp_client import RcpClient
+from core.rcp_client import RpcClient
 from core.config import config
 from core.hash import get_hash
 

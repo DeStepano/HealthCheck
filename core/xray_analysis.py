@@ -12,7 +12,7 @@ import tensorflow as tf
 import os
 import numpy
 
-# model = tf.keras.models.load_model("ml/effnet.keras")
+model = tf.keras.models.load_model("ml/x_ray_effnet_b1.h5")
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.host))
@@ -22,24 +22,29 @@ channel = connection.channel()
 channel.queue_declare(queue=config.xray_queue)
 
 def xray_analysis(image):
-    # predict_in = []
-    # image_size = 256
-    # img = cv2.imread(os.path.join("путь в папку","название файла (фото)"))
-    # img = cv2.resize(img,(image_size, image_size))
-    # img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # predict_in.append(img)
-    # predict_in.append(img)
-    # prediction = model.predict(predict_in)
-    # result = prediction[0]
-    time.sleep(3)
-    response = "Обнаружена аномалия. Рекомендуем обратиться к специалисту"
-    return response
+    image_size = 128
+    uploaded = image
+    img_np = np.frombuffer(uploaded, np.uint8)
+    uploaded_img = cv2.imdecode(img_np, cv2.IMREAD_COLOR)
+    resized_image = cv2.resize(uploaded_img, (image_size, image_size))
+    predict_in = []
+    predict_in.append(resized_image)
+    predict_in = np.array(predict_in)  
+
+    prediction = model.predict(predict_in)
+    return prediction[0][0]
 
 def on_request(ch, method, props, body):
     body = body[2:-1]
     decoded_data = base64.b64decode(body)
-    image = Image.open(io.BytesIO(decoded_data))
-    response = json.dumps(xray_analysis(image))
+    image = decoded_data
+    res = xray_analysis(image)
+    print(res)
+    response = ""
+    if res >= 0.5:
+        response = json.dumps("Обнаружена аномалия! Вам следует обратиться к специалисту.")
+    else:
+        response = json.dumps("Пневмонии не обнаружено")
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \

@@ -47,7 +47,7 @@ diagnostic_kb = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="/Болезнь_3"),
-            KeyboardButton(text="/Болезнь_4")
+            KeyboardButton(text="/Флюорография")
         ],
         [
             KeyboardButton(text="/Главное_меню")

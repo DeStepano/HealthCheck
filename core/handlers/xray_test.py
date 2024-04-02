@@ -20,17 +20,17 @@ router = Router()
 dp = Dispatcher()
 
 class Form(StatesGroup):
-    photo = State()
+    photo_xray = State()
 
 global bot
 
-@router.message(Command("Болезнь_4"), StateFilter(None))
+@router.message(Command("Флюорография"), StateFilter(None))
 async def settings(message: Message, state: FSMContext):
-    await state.set_state(Form.photo)
+    await state.set_state(Form.photo_xray)
     await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)
 
 
-@router.message(F.photo, Form.photo)
+@router.message(F.photo, Form.photo_xray)
 async def photo_message(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(photo = message.photo[-1])
     key, additional_key = await get_hash(message.from_user.id)
@@ -41,8 +41,8 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
         data['photo'],
         destination=path
     )
-    cursor = users.cursor()
     users = sl.connect('core/users.db')
+    cursor = users.cursor()
     cursor.execute('UPDATE users SET xray_image = ? WHERE key = ? AND additional_key = ?', (path, key, additional_key))
     users.commit()
     file_path = await bot.get_file(data['photo'].file_id)
@@ -58,6 +58,6 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     users.close()
 
 
-@router.message(Form.photo)
+@router.message(Form.photo_xray)
 async def incorrect_photo(message: Message):
     await message.answer("Это не фото, отправте фото")

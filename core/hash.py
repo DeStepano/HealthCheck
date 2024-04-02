@@ -5,7 +5,6 @@ async def get_hash(key: int) -> str:
     hash_id = int(hashlib.sha256(str(key).encode()).hexdigest(),16)
     key = hash_id%1000000000
     additional_key = str(hash_id//1000000000)
-    print(additional_key)
     return [key, additional_key]
 
 

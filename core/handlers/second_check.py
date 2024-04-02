@@ -14,7 +14,7 @@ from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from core.config import config
-from core.rcp_client import RcpClient
+from core.rcp_client import RpcClient
 
 from aiogram.types import(
     CallbackQuery
