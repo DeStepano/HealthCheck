@@ -18,17 +18,16 @@ async def change_user_data(message: Message, state: FSMContext):
 
 @router.message(Command("Точно_удалить"))
 async def change_user_data(message: Message, state: FSMContext):
-    id_user = await get_hash(message.from_user.id)
+    keys = await get_hash(message.from_user.id)
     users = sl.connect('core/users.db')
     cursor = users.cursor()
-    brain_image = cursor.execute("SELECT brain_image FROM users WHERE id=?", [id_user]).fetchone()[0]
+    brain_image = cursor.execute("""SELECT brain_image FROM users WHERE key = ? AND additional_key = ?""", keys).fetchone()[0]
     if brain_image != None:
         os.remove(f"{brain_image}")
-    xray_image = cursor.execute("SELECT xray_image FROM users WHERE id=?", [id_user]).fetchone()[0]
+    xray_image = cursor.execute("""SELECT xray_image FROM users WHERE key = ? AND additional_key = ?""", keys).fetchone()[0]
     if xray_image != None:
         os.remove(f"{xray_image}")
-    cursor.execute("DELETE FROM users WHERE id = ?", (id_user,))
-    cursor.execute("UPDATE users SET id = id - 1 WHERE id > ?", (id_user,))
+    cursor.execute("DELETE FROM users WHERE key = ? AND additional_key = ?", keys)
     users.commit()
     await message.answer("Успешно", reply_markup=keyboards.registration_kb)
 

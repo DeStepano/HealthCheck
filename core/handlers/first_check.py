@@ -109,12 +109,13 @@ async def get_age(message: Message, state: FSMContext):
     elif text == "никогда не курил":
         await state.update_data(smoking_status=0)
 
-    id_user = await get_hash(message.from_user.id)
+    key, additional_key = await get_hash(message.from_user.id)
     data = await state.get_data()
     await state.clear()
     data = list(data.values())
     data.append(response)
-    data.append(id_user)
+    data.append(key)
+    data.append(additional_key)
     data = tuple(data)
     response = json.loads(RcpClient.call(message, config.first_check_queue))
     users = sl.connect('core/users.db')
@@ -127,7 +128,7 @@ async def get_age(message: Message, state: FSMContext):
                     bmi = ?,
                     smoking_status = ?,
                     first_check_result
-                    WHERE id = ?''', data)
+                    WHERE key = ? AND additional_key = ?''', data)
     users.commit()
     cursor.close()
     users.close()

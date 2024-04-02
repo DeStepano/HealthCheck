@@ -6,6 +6,7 @@ from PIL import Image
 import io
 import base64
 from config import config
+import torch
 
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.host))
@@ -14,9 +15,12 @@ channel = connection.channel()
 
 channel.queue_declare(queue=config.brain_analysis_queue)
 
+# model = torch.load('ml/TumorClassifier.model')
+
 def brain_analysis(image):
     time.sleep(3)
-    return 123456
+    response = "Обнаружена аномалия. Рекомендуем обратиться к специалисту"
+    return response
 
 def on_request(ch, method, props, body):
     body = body[2:-1]

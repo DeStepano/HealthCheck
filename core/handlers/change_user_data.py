@@ -47,19 +47,19 @@ async def get_sex(message: Message, state: FSMContext):
     data = await state.get_data()
     await state.clear()
 
-    user_id = await get_hash(message.from_user.id)
+    key, additional_key = await get_hash(message.from_user.id)
     formatted_text = []
     for key, value in data.items():
         formatted_text.append(f"{key}: {value}")
 
     name, age, sex = data.values()
     
-    await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
+    await message.answer(F" имя: {name} \nвозраст: {age} \nпол: {sex}")
     users = sl.connect('core/users.db')
     cursor = users.cursor()
-    cursor.execute('UPDATE users SET name = ? WHERE id = ?', (name, user_id))
-    cursor.execute('UPDATE users SET age = ? WHERE id = ?', (age, user_id))
-    cursor.execute('UPDATE users SET sex = ? WHERE id = ?', (sex, user_id))
+    cursor.execute("""UPDATE users SET name = ? WHERE key = ? AND additional_key = ?""", (name, key, additional_key) )
+    cursor.execute("""UPDATE users SET age = ? WHERE key = ? AND additional_key = ?""", (age, key, additional_key))
+    cursor.execute("""UPDATE users SET sex = ? WHERE key = ? AND additional_key = ?""", (sex, key, additional_key))
     users.commit()
     cursor.close()
     users.close()

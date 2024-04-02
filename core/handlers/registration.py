@@ -21,17 +21,8 @@ router=Router()
 
 @router.message(Command("Зарегистрироваться"), StateFilter(None))
 async def registration(message: Message, state: FSMContext):
-    id_user= await get_hash(message.from_user.id)
-    users = sl.connect('core/users.db')
-    cur = users.cursor()
-    exists = cur.execute("SELECT 1 FROM users use WHERE id = ?", [id_user]).fetchone()
-    cur.close()
-    users.close()
-    if (exists):
-        await message.answer("Вы уже зарегистированны!", reply_markup=keyboards.main_kb)
-    else:
-        await state.set_state(Form.name)
-        await message.answer("Введите имя")
+    await state.set_state(Form.name)
+    await message.answer("Введите имя")
 
 
 @router.message(Form.name)
@@ -63,14 +54,14 @@ async def get_sex(message: Message, state: FSMContext):
         formatted_text.append(f"{key}: {value}")
     
     name, age, sex = data.values()
-    await message.answer(F" имя: {name} \n возраст: {age} \n пол: {sex}")
+    await message.answer(F"имя: {name} \nвозраст: {age} \nпол: {sex}")
     name='"'+name+'"'
     sex='"' + sex +'"'
     users = sl.connect('core/users.db')
-    user_id =await get_hash(message.from_user.id)
-
+    key, additional_key = await get_hash(message.from_user.id)
     cursor = users.cursor()
-    cursor.execute(f'INSERT INTO users (id, name, age, sex) VALUES ({user_id}, {name}, {age}, {sex})')
+    additional_key = "\"" + additional_key + "\""
+    cursor.execute(f'INSERT INTO users (key, additional_key, name, age, sex) VALUES ({key}, {additional_key}, {name}, {age}, {sex})')
     users.commit()
     cursor.close()
     users.close()

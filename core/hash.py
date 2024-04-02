@@ -2,7 +2,11 @@ import hashlib
 import sqlite3 as sl
 
 async def get_hash(key: int) -> str:
-    return (int(hashlib.sha256(str(key).encode()).hexdigest(),16))%1000000000
+    hash_id = int(hashlib.sha256(str(key).encode()).hexdigest(),16)
+    key = hash_id%1000000000
+    additional_key = str(hash_id//1000000000)
+    print(additional_key)
+    return [key, additional_key]
 
 
 # def get_user(user_id: int, current_add_key:str):

@@ -13,7 +13,8 @@ async def main():
     users = sl.connect('core/users.db')
     cursor = users.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                	(id INTEGER PRIMARY KEY,
+                	(key INTEGER,
+                    additional_key TEXT,
                     name TEXT,
                     age INTEGER,
                     sex TEXT,
@@ -37,7 +38,8 @@ async def main():
                     xray_image TEXT,
                     xray_result INTEGER,
                     first_check_result INTEGER,
-                    second_check_result INTEGER
+                    second_check_result INTEGER,
+                    PRIMARY KEY(key, additional_key)
                     )''')
     users.commit()
 

@@ -31,7 +31,7 @@ async def settings(message: Message, state: FSMContext):
 @router.message(F.photo, Form.photo)
 async def photo_message(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(photo = message.photo[-1])
-    user_id = await get_hash(message.from_user.id)
+    key, additional_key = await get_hash(message.from_user.id)
     data = await state.get_data()
     await state.clear()
     path = f"/home/sasha/health_checker/HealthCheck/images/{data['photo'].file_id + str(uuid.uuid4())}.jpg"
@@ -41,7 +41,7 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     )
     users = sl.connect('core/users.db')
     cursor = users.cursor()
-    cursor.execute('UPDATE users SET brain_image = ? WHERE id = ?', (path, user_id))
+    cursor.execute('UPDATE users SET brain_image = ? WHERE key = ? AND additional_key = ?', (path, key, additional_key) )
     users.commit()
     file_path = await bot.get_file(data['photo'].file_id)
     photo_binary_data = await bot.download_file(file_path.file_path)
@@ -49,7 +49,7 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     encoded_data = base64.b64encode(photo_binary_data)
     await message.answer("Фото получено. Начат анализ...")
     result = json.loads(RcpClient.call(encoded_data, config.brain_analysis_queue))
-    cursor.execute('UPDATE users SET brain_result = ? WHERE id = ?', (result, user_id))
+    cursor.execute('UPDATE users SET brain_result = ? WHERE key = ? AND additional_key = ?', (result, key, additional_key))
     users.commit()
     cursor.close()
     users.close()

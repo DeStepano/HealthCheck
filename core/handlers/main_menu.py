@@ -30,5 +30,5 @@ async def settings(message: Message):
 
 @router.message(Command("Проверить_анализы"))
 async def settings(message: Message):
-    await message.answer("Выберете нужное", reply_markup=keyboards.diagnostic_kb)
+    await message.answer("Выберете заболевание", reply_markup=keyboards.diagnostic_kb)
 
