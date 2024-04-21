@@ -10,6 +10,7 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
+from core.states import States
 
 router = Router()
 
@@ -29,6 +30,12 @@ async def settings(message: Message):
 
 
 @router.message(Command("Проверить_анализы"))
-async def settings(message: Message):
+async def settings(message: Message, state: FSMContext):
+    await state.set_state(States.command_1)
     await message.answer("Выберете заболевание", reply_markup=keyboards.diagnostic_kb)
 
+
+@router.message(Command("Больницы_рядом"))
+async def settings(message: Message, state: FSMContext):
+    await state.set_state(States.command_2)
+    await message.answer("Выберете заболевание", reply_markup=keyboards.diagnostic_kb)

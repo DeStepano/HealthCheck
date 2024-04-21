@@ -12,7 +12,7 @@ from core.rcp_client import RcpClient
 import base64
 import json
 from core.config import config
-
+from core.states import States
 router = Router()
 
 dp = Dispatcher()
@@ -22,7 +22,7 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Болезнь_1"), StateFilter(None))
+@router.message(Command("Болезнь_1"), StateFilter(States.command_1))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_brain)
     print("brain")

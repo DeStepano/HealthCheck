@@ -15,7 +15,7 @@ from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from core.config import config
 from core.rcp_client import RpcClient
-
+from core.states import States
 from aiogram.types import(
     CallbackQuery
 )
@@ -35,7 +35,7 @@ class Form(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Болезнь_2"), StateFilter(None))
+@router.message(Command("Болезнь_2"), StateFilter(States.command_1))
 async def change_user_data(message: Message, state: FSMContext):
     await state.set_state(Form.cp)
     await message.answer("Как вы бы описали тип боли в груди: Выберете значение:", reply_markup=keyboards.get_keyboard_cp())

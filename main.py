@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher, F, Router
 import logging
 import sqlite3 as sl
 from core.config import config
-from core.handlers import brain_test, registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, xray_test
+from core.handlers import brain_test, registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals
 
 
 logging.basicConfig(level=logging.INFO)
@@ -11,8 +11,8 @@ logging.basicConfig(level=logging.INFO)
 
 async def main():
     users = sl.connect('core/users.db')
-    cursor = users.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS users
+    users_cursor = users.cursor()
+    users_cursor.execute('''CREATE TABLE IF NOT EXISTS users
                 	(key INTEGER,
                     additional_key TEXT,
                     name TEXT,
@@ -43,7 +43,27 @@ async def main():
                     )''')
     users.commit()
 
-    
+    hospitals = sl.connect('core/hospitals.db')
+    hospitals_cursor = hospitals.cursor()
+    hospitals_cursor.execute('''
+                                CREATE TABLE IF NOT EXISTS hospitals
+                             (
+                             id INTEGER PRIMARY KEY AUTOINCREMENT,
+                             name TEXT,
+                             disease TEXT,
+                             coord_x INTEGER,
+                             coord_y INTEGER
+                             )
+                            ''')
+    hospitals.commit()
+    # hospitals = sl.connect('core/hospitals.db')
+    hospitals_cursor = hospitals.cursor()
+    data = [
+        ("Лахта клиника", "pneumonia", 59.937250, 30.356190),
+        ("XII век", "pneumonia", 59.924017, 30.351108)
+    ]
+    hospitals_cursor.executemany('INSERT INTO hospitals (name, disease, coord_x, coord_y) VALUES (?, ?, ?, ?)', data)
+    hospitals.commit()
     bot=Bot(config.token)
     dp = Dispatcher()  
     dp.include_routers(start.router,
@@ -54,7 +74,9 @@ async def main():
                     brain_test.router,
                     second_check.router,
                     first_check.router, 
-                    xray_test.router)
+                    xray_test.router,
+                    show_hospitals.router
+                    )
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
 

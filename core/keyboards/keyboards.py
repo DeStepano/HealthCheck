@@ -26,6 +26,9 @@ registration_kb = ReplyKeyboardMarkup(
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
+            KeyboardButton(text ="/Больницы_рядом")
+        ],
+        [
             KeyboardButton(text="/Проверить_анализы"),
             KeyboardButton(text="/Диалог_с_врачем")
         ],

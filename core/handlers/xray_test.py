@@ -13,7 +13,7 @@ import base64
 import json
 from PIL import Image
 from core.config import config
-
+from core.states import States
 
 router = Router()
 
@@ -24,7 +24,7 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Флюорография"), StateFilter(None))
+@router.message(Command("Флюорография"), StateFilter(States.command_1))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_xray)
     await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)
