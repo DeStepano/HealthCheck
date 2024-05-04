@@ -10,6 +10,11 @@ from magic_filter import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+from aiogram.types import WebAppInfo
+
+
+web_kb = KeyboardButton("Перейти", web_app=WebAppInfo('https://<your_domain>'))
+
 
 
 registration_kb = ReplyKeyboardMarkup(

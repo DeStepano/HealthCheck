@@ -42,28 +42,7 @@ async def main():
                     PRIMARY KEY(key, additional_key)
                     )''')
     users.commit()
-
-    hospitals = sl.connect('core/hospitals.db')
-    hospitals_cursor = hospitals.cursor()
-    hospitals_cursor.execute('''
-                                CREATE TABLE IF NOT EXISTS hospitals
-                             (
-                             id INTEGER PRIMARY KEY AUTOINCREMENT,
-                             name TEXT,
-                             disease TEXT,
-                             coord_x INTEGER,
-                             coord_y INTEGER
-                             )
-                            ''')
-    hospitals.commit()
-    # hospitals = sl.connect('core/hospitals.db')
-    hospitals_cursor = hospitals.cursor()
-    data = [
-        ("Лахта клиника", "pneumonia", 59.937250, 30.356190),
-        ("XII век", "pneumonia", 59.924017, 30.351108)
-    ]
-    hospitals_cursor.executemany('INSERT INTO hospitals (name, disease, coord_x, coord_y) VALUES (?, ?, ?, ?)', data)
-    hospitals.commit()
+   
     bot=Bot(config.token)
     dp = Dispatcher()  
     dp.include_routers(start.router,

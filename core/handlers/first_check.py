@@ -29,7 +29,7 @@ class Form2(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Болезнь_3"), StateFilter(States.command_1))
+@router.message(Command("Болезнь_3"), StateFilter(States.check_diseases_command))
 async def get_sex(message: Message, state: FSMContext):
     await state.set_state(Form2.hypertension)
     await message.answer("Есть ли у Вас гипертония?", reply_markup=keyboards.survey_kb)

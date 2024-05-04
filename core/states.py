@@ -1,5 +1,5 @@
 from aiogram.fsm.state import State, StatesGroup
 
 class States(StatesGroup):
-    command_1 = State()
-    command_2 = State()
+    show_hospitals_command = State()
+    check_diseases_command = State()
