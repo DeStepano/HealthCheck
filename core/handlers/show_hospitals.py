@@ -18,9 +18,13 @@ from core.keyboards import keyboards
 
 router = Router()
 
-@router.message(Command("Болезнь_4"), StateFilter(States.show_hospitals_command))
+@router.message(Command("Пневмония"), StateFilter(States.show_hospitals_command))
 async def get_sex(message: Message, state: FSMContext):
     await state.clear()
-    await message.answer("Болезнь 4", reply_markup=keyboards.web_kb)
+    await message.answer("Больницы, занимающиеся лечением пневмонии", reply_markup=keyboards.web_kb_pneumonia)
 
 
+@router.message(Command("Диабет"), StateFilter(States.show_hospitals_command))
+async def get_sex(message: Message, state: FSMContext):
+    await state.clear()
+    await message.answer("Больницы, занимающиеся лечением диабета", reply_markup=keyboards.web_kb_diabetes)

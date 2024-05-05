@@ -10,12 +10,48 @@ from magic_filter import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from aiogram.utils.keyboard import InlineKeyboardBuilder
-from aiogram.types import WebAppInfo
+from aiogram.types import WebAppInfo, WebAppData
 
 
-web_kb = KeyboardButton("Перейти", web_app=WebAppInfo('https://<your_domain>'))
+# web_app_data = WebAppData(web_app=WebAppInfo(url='https://www.google.com/'))
+# keyboard_button = KeyboardButton("Перейти", web_app_data=web_app_data)
 
 
+disease_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text = "/Пневмония"),
+            KeyboardButton(text = "/Диабет")
+        ],
+    ],
+    resize_keyboard=True
+)
+
+
+web_kb_pneumonia = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://127.0.0.1:5000/web_app?name_disease=pneumonia')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+
+web_kb_diabetes = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://127.0.0.1:5000/web_app?name_disease=diabetes')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+# web_kb
 
 registration_kb = ReplyKeyboardMarkup(
     keyboard=[

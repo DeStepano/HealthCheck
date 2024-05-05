@@ -22,7 +22,7 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Болезнь_1"), StateFilter(States.command_1))
+@router.message(Command("Болезнь_1"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_brain)
     print("brain")

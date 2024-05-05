@@ -24,7 +24,7 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Флюорография"), StateFilter(States.command_1))
+@router.message(Command("Флюорография"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_xray)
     await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)

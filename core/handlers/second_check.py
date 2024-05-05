@@ -35,7 +35,7 @@ class Form(StatesGroup):
 router = Router()
 
 
-@router.message(Command("Болезнь_2"), StateFilter(States.command_1))
+@router.message(Command("Болезнь_2"), StateFilter(States.check_diseases_command))
 async def change_user_data(message: Message, state: FSMContext):
     await state.set_state(Form.cp)
     await message.answer("Как вы бы описали тип боли в груди: Выберете значение:", reply_markup=keyboards.get_keyboard_cp())
