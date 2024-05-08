@@ -14,7 +14,6 @@ from core.config import config
 from core.states import States
 from aiogram.types import WebAppInfo
 from core.keyboards import keyboards
-# import requests
 
 router = Router()
 

@@ -23,6 +23,9 @@ disease_kb = ReplyKeyboardMarkup(
             KeyboardButton(text = "/Пневмония"),
             KeyboardButton(text = "/Диабет")
         ],
+        [
+            KeyboardButton(text='/Главное_меню')
+        ],
     ],
     resize_keyboard=True
 )

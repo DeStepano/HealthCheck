@@ -29,6 +29,8 @@ async def change_user_data(message: Message, state: FSMContext):
         os.remove(f"{xray_image}")
     cursor.execute("DELETE FROM users WHERE key = ? AND additional_key = ?", keys)
     users.commit()
+    cursor.close()
+    users.close()
     await message.answer("Успешно", reply_markup=keyboards.registration_kb)
 
 

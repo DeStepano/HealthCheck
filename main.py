@@ -3,10 +3,13 @@ from aiogram import Bot, Dispatcher, F, Router
 import logging
 import sqlite3 as sl
 from core.config import config
-from core.handlers import brain_test, registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals
+from core.handlers import brain_test, registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals, dialogue_with_doctor
 
 
 logging.basicConfig(level=logging.INFO)
+
+
+bot=Bot(config.token)
 
 
 async def main():
@@ -42,8 +45,28 @@ async def main():
                     PRIMARY KEY(key, additional_key)
                     )''')
     users.commit()
+    users_cursor.close()
+    users.close()
+
+    doctors = sl.connect('core/doctors.db')
+    doctors_cursor = doctors.cursor()
+    doctors_cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS doctors
+                    (
+                    key INTEGER PRIMARY KEY,
+                    username TEXT,
+                    firstname TEXT,
+                    surname TEXT,
+                    city TEXT,
+                    work_address TEXT,
+                    name_organization TEXT,
+                    disease TEXT
+                    )
+            ''')
+    doctors.commit()
+    doctors_cursor.close()
+    doctors.close()
    
-    bot=Bot(config.token)
     dp = Dispatcher()  
     dp.include_routers(start.router,
                     registration.router,
@@ -54,7 +77,8 @@ async def main():
                     second_check.router,
                     first_check.router, 
                     xray_test.router,
-                    show_hospitals.router
+                    show_hospitals.router,
+                    dialogue_with_doctor.router
                     )
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
