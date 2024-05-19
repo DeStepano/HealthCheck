@@ -14,7 +14,7 @@ from aiogram import F
 from typing import Optional
 from aiogram.filters.callback_data import CallbackData
 from core.config import config
-from core.rcp_client import RpcClient
+from core.rcp_client import rpcClient
 from core.states import States
 from aiogram.types import(
     CallbackQuery
@@ -114,7 +114,7 @@ async def set_restecg(callback: CallbackQuery, callback_data: keyboards.NumbersC
     data = await state.get_data()
     message = json.dumps(data)
     await callback.message.answer("Начата обработка", reply_markup=keyboards.main_kb)
-    response = json.loads(RcpClient.call(message, config.second_check_queue))
+    response = json.loads(rpcClient.call(message, config.second_check_queue))
     data = list(data.values())
     key, addition_key = await get_hash(callback.from_user.id)
     data.append(response)

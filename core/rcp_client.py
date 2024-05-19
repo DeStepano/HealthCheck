@@ -39,4 +39,4 @@ class RpcClient(object):
             self.connection.process_data_events(time_limit=None)
         return self.response
 
-RcpClient = RpcClient()
+rpcClient = RpcClient()

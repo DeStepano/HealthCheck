@@ -2,7 +2,7 @@ import asyncio
 
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
 import sqlite3 as sl
 import logging
@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.INFO)
 router = Router()
 
 
-@router.message(Command("start"))
-async def start(message: Message, state: FSMContext):
+@router.message(CommandStart())
+async def start_command(message: Message, state: FSMContext):
     await state.clear()
     keys = await get_hash(message.from_user.id)
     users = sl.connect('core/users.db')

@@ -30,6 +30,11 @@ with app.app_context():
     db.create_all()
 
 
+@app.route('/')
+def start():
+    return render_template('index.html')
+
+
 @app.route('/pneumonia')
 def get_data_pneumonia():
     results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='pneumonia'))

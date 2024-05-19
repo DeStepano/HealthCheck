@@ -11,7 +11,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 import json
-from core.rcp_client import RpcClient
+from core.rcp_client import rpcClient
 from core.config import config
 from core.hash import get_hash
 from core.states import States
@@ -118,7 +118,7 @@ async def get_age(message: Message, state: FSMContext):
     data.append(key)
     data.append(additional_key)
     data = tuple(data)
-    response = json.loads(RcpClient.call(message, config.first_check_queue))
+    response = json.loads(rpcClient.call(message, config.first_check_queue))
     users = sl.connect('core/users.db')
     cursor = users.cursor()
     cursor.execute('''UPDATE users SET hypertension = ?,

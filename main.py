@@ -3,8 +3,8 @@ from aiogram import Bot, Dispatcher, F, Router
 import logging
 import sqlite3 as sl
 from core.config import config
-from core.handlers import brain_test, registration, start, change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals, dialogue_with_doctor
-
+from core.handlers import start, brain_test, registration,  change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals, dialogue_with_doctor, show_test_results
+# from core.tests.test_handlers import test_start
 
 logging.basicConfig(level=logging.INFO)
 
@@ -78,7 +78,8 @@ async def main():
                     first_check.router, 
                     xray_test.router,
                     show_hospitals.router,
-                    dialogue_with_doctor.router
+                    dialogue_with_doctor.router,
+                    show_test_results.router
                     )
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)

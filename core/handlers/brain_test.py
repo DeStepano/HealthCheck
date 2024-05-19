@@ -8,7 +8,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from core.hash import get_hash
-from core.rcp_client import RcpClient
+from core.rcp_client import rpcClient
 import base64
 import json
 from core.config import config
@@ -50,7 +50,7 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     print("brain")
     encoded_data = base64.b64encode(photo_binary_data)
     await message.answer("Фото получено. Начат анализ...")
-    result = json.loads(RcpClient.call(encoded_data, config.brain_analysis_queue))
+    result = json.loads(rpcClient.call(encoded_data, config.brain_analysis_queue))
     cursor.execute('UPDATE users SET brain_result = ? WHERE key = ? AND additional_key = ?', (result, key, additional_key))
     users.commit()
     cursor.close()
