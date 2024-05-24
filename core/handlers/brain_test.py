@@ -25,8 +25,7 @@ global bot
 @router.message(Command("Болезнь_1"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_brain)
-    print("brain")
-    await message.answer("Прикрепите фото", reply_markup=keyboards.diagnostic_kb)
+    await message.answer("Прикрепите фото вашего МРТ размера не меньше 150*150", reply_markup=keyboards.diagnostic_kb)
 
 
 @router.message(F.photo, Form.photo_brain)
@@ -47,7 +46,6 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
     file_path = await bot.get_file(data['photo'].file_id)
     photo_binary_data = await bot.download_file(file_path.file_path)
     photo_binary_data = photo_binary_data.read()
-    print("brain")
     encoded_data = base64.b64encode(photo_binary_data)
     await message.answer("Фото получено. Начат анализ...")
     result = json.loads(rpcClient.call(encoded_data, config.brain_analysis_queue))
