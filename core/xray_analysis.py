@@ -30,7 +30,6 @@ def xray_analysis(image):
     predict_in = []
     predict_in.append(resized_image)
     predict_in = np.array(predict_in)  
-
     prediction = model.predict(predict_in)
     return prediction[0][0]
 
@@ -39,12 +38,12 @@ def on_request(ch, method, props, body):
     decoded_data = base64.b64decode(body)
     image = decoded_data
     res = xray_analysis(image)
-    print(res)
     response = ""
     if res >= 0.5:
         response = json.dumps("Обнаружена аномалия! Вам следует обратиться к специалисту.")
     else:
         response = json.dumps("Пневмонии не обнаружено")
+
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
