@@ -101,8 +101,3 @@ channel.basic_consume(queue=config.brain_analysis_queue, on_message_callback=on_
 
 print(" [x] Awaiting RPC requests")
 channel.start_consuming()
-
-
-#1 менингиома
-#2 глинома
-#3 гипофиз
