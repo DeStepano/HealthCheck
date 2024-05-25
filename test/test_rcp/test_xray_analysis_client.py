@@ -4,10 +4,10 @@ from PIL import Image
 import base64
 from core.config import config
 import json
-
-
-
 from core.rcp_client import rpcClient
+
+
+
 def test_xray_analysis_client():
     ans = [0,0,1,0,1,0,0,1,0,1]
     dictionary={0:"Пневмонии не обнаружено", 1: "Обнаружена аномалия! Вам следует обратиться к специалисту."}
