@@ -76,7 +76,7 @@ async def get_weight(message: Message, state: FSMContext):
 
 @router.message(Form2.smoking_status, F.text.casefold().in_(["курю", "курил раньше", "никогда не курил", "когда либо", "бросаю"]))
 async def get_smoking_status(message: Message, state: FSMContext):
-    ans = {"курю": 4, "курил раньше": 2, "никогда не курил": 0, "когда либо": 1, "бросаю": 3}
+    ans = {"курю": 1, "курил раньше": 3, "никогда не курил": 4, "когда либо": 0, "бросаю": 2}
     await state.update_data(smoking_status = ans[str(message.text).casefold()])
     await state.set_state(Form2.HbА1С)
     await message.answer("Введте значение HbА1С")
