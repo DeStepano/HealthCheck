@@ -5,7 +5,7 @@ from core.config import config
 class RpcClient(object):
     def __init__(self):
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host=config.host))
+            pika.ConnectionParameters(host=config.rcp_host))
 
         self.channel = self.connection.channel()
 

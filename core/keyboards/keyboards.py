@@ -13,7 +13,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import WebAppInfo, WebAppData
 
 
-# web_app_data = WebAppData(web_app=WebAppInfo(url='https://www.google.com/'))
+# web_app_data = WebAppData(web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=pneumonia'))
 # keyboard_button = KeyboardButton("Перейти", web_app_data=web_app_data)
 
 
@@ -34,7 +34,7 @@ disease_kb = ReplyKeyboardMarkup(
 web_kb_pneumonia = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://127.0.0.1:5000/web_app?name_disease=pneumonia')),
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=pneumonia')),
         ],
         [
             KeyboardButton(text="/Главное_меню"),
@@ -46,7 +46,7 @@ web_kb_pneumonia = ReplyKeyboardMarkup(
 web_kb_diabetes = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://127.0.0.1:5000/web_app?name_disease=diabetes')),
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=diabetes')),
         ],
         [
             KeyboardButton(text="/Главное_меню"),
@@ -93,7 +93,7 @@ diagnostic_kb = ReplyKeyboardMarkup(
             KeyboardButton(text="/Болезнь_2")
         ],
         [
-            KeyboardButton(text="/Болезнь_3"),
+            KeyboardButton(text="/Диабет"),
             KeyboardButton(text="/Флюорография")
         ],
         [
@@ -110,6 +110,10 @@ smoke_kb = ReplyKeyboardMarkup(
             KeyboardButton(text="Курю"),
             KeyboardButton(text="Курил раньше"),
             KeyboardButton(text="Никогда не курил")
+        ],
+        [
+            KeyboardButton(text="Когда либо"),
+            KeyboardButton(text="Бросаю")
         ],
     ],
     resize_keyboard=True

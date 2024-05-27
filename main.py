@@ -4,7 +4,7 @@ import logging
 import sqlite3 as sl
 from core.config import config
 from core.handlers import start, brain_test, registration,  change_user_data, main_menu, delete_acc, second_check, first_check, xray_test, show_hospitals, dialogue_with_doctor, show_test_results
-# from core.tests.test_handlers import test_start
+from core.sql_utils import create_table, connect_to_postgres, drop_table
 
 logging.basicConfig(level=logging.INFO)
 
@@ -13,40 +13,9 @@ bot=Bot(config.token)
 
 
 async def main():
-    users = sl.connect('core/users.db')
-    users_cursor = users.cursor()
-    users_cursor.execute('''CREATE TABLE IF NOT EXISTS users
-                	(key INTEGER,
-                    additional_key TEXT,
-                    name TEXT,
-                    age INTEGER,
-                    sex TEXT,
-                    hypertension INTEGER,
-                    heart_disease INTEGER,
-                    ever_married INTEGER,
-                    urban_dweller INTEGER,
-                    avg_glucose_level INTEGER,
-                    bmi INTEGER,
-                    smoking_status INTEGER,
-                    cp INTEGER, trtbps INTEGER,
-                    chol INTEGER,
-                    fbs INTEGER,
-                    restecg INTEGER,
-                    thalach INTEGER,
-                    exng INTEGER,
-                    slope INTEGER,
-                    ca INTEGER,
-                    brain_image TEXT,
-                    brain_result INTEGER,
-                    xray_image TEXT,
-                    xray_result INTEGER,
-                    first_check_result INTEGER,
-                    second_check_result INTEGER,
-                    PRIMARY KEY(key, additional_key)
-                    )''')
-    users.commit()
-    users_cursor.close()
-    users.close()
+    conn = await connect_to_postgres()
+    # await drop_table(conn)
+    await create_table(conn)
 
     doctors = sl.connect('core/doctors.db')
     doctors_cursor = doctors.cursor()

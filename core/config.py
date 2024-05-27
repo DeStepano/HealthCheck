@@ -6,12 +6,18 @@ class Config(object):
             data = yaml.safe_load(file)
             self.token = data['TOKEN']  
             self.rcp_client = data['rcp_client'] 
-            self.host = self.rcp_client['host'] 
+            self.rcp_host = self.rcp_client['host'] 
             self.queues = self.rcp_client['queues']
             self.brain_analysis_queue = self.queues['brain_queue']
             self.xray_queue = self.queues['xray_queue']
             self.first_check_queue = self.queues['first_check_queue']
             self.second_check_queue = self.queues['second_check_queue']
+            self.users_db = data['users_db']
+            self.users_db_host = self.users_db['host']
+            self.user_db_port = self.users_db['port']
+            self.user_db_user = self.users_db['user']
+            self.users_db_password = self.users_db['password']
+            self.users_db_database = self.users_db['database']
 
 
 config = Config()

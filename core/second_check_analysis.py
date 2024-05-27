@@ -6,7 +6,7 @@ import asyncio
 from config import config
 
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.host))
+    pika.ConnectionParameters(host=config.rcp_host))
 
 channel = connection.channel()
 

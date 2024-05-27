@@ -15,7 +15,7 @@ import numpy
 model = tf.keras.models.load_model("ml/x_ray_effnet_b1.h5")
 
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.host))
+    pika.ConnectionParameters(host=config.rcp_host))
 
 channel = connection.channel()
 

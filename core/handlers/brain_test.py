@@ -7,12 +7,15 @@ from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from core.hash import get_hash
+from core.sql_utils import insert_data
 from core.rcp_client import rpcClient
 import base64
 import json
 from core.config import config
 from core.states import States
+from PIL import Image
+from core.hash import get_hash_string
+import io
 router = Router()
 
 dp = Dispatcher()
@@ -31,29 +34,30 @@ async def settings(message: Message, state: FSMContext):
 @router.message(F.photo, Form.photo_brain)
 async def photo_message(message: Message, state: FSMContext, bot: Bot):
     await state.update_data(photo = message.photo[-1])
-    key, additional_key = await get_hash(message.from_user.id)
     data = await state.get_data()
-    await state.clear()
-    path = f"/home/sasha/health_checker/HealthCheck/images/{data['photo'].file_id + str(uuid.uuid4())}.jpg"
-    await bot.download(
-        data['photo'],
-        destination=path
-    )
-    users = sl.connect('core/users.db')
-    cursor = users.cursor()
-    cursor.execute('UPDATE users SET brain_image = ? WHERE key = ? AND additional_key = ?', (path, key, additional_key) )
-    users.commit()
     file_path = await bot.get_file(data['photo'].file_id)
     photo_binary_data = await bot.download_file(file_path.file_path)
-    photo_binary_data = photo_binary_data.read()
-    encoded_data = base64.b64encode(photo_binary_data)
-    await message.answer("Фото получено. Начат анализ...")
-    result = json.loads(rpcClient.call(encoded_data, config.brain_analysis_queue))
-    cursor.execute('UPDATE users SET brain_result = ? WHERE key = ? AND additional_key = ?', (result, key, additional_key))
-    users.commit()
-    cursor.close()
-    users.close()
-    await message.answer(f"Ваш результат: {result}")
+    image = Image.open(photo_binary_data)
+    width, height = image.size
+    if width < 150 or height < 150:
+        await message.answer("Размер фото слишком мал, пришлите другое")
+    else:
+        await state.set_state(States.check_diseases_command)
+        await message.answer("Изображение получено, начат анализ")
+        file_name = await get_hash_string(data['photo'].file_id)
+        path = f"/home/sasha/health_checker/HealthCheck/images/{file_name + str(uuid.uuid4())}.jpg"
+        await bot.download(
+            data['photo'],
+            destination=path
+        )
+        user_id = message.from_user.id
+        await insert_data("UPDATE users SET brain_image = $3 WHERE key = $1 AND additional_key = $2", (path,), user_id)
+        photo_binary_data = await bot.download_file(file_path.file_path)
+        photo_binary_data = photo_binary_data.read()
+        encoded_data = base64.b64encode(photo_binary_data)
+        result = json.loads(rpcClient.call(encoded_data, config.brain_analysis_queue))
+        await insert_data('UPDATE users SET brain_result = $3 WHERE key = $1 AND additional_key = $2', (result,), user_id)
+        await message.answer(f"Ваш результат: {result}")
 
 
 @router.message(Form.photo_brain)

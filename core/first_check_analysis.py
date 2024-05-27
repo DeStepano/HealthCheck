@@ -2,19 +2,32 @@ import json
 import pika
 import time
 import asyncio
-
+import pandas as pd
 from config import config
-
+import torch
+from xgboost import XGBClassifier
+import joblib
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.host))
+    pika.ConnectionParameters(host=config.rcp_host))
 
 channel = connection.channel()
 
 channel.queue_declare(queue=config.first_check_queue)
 
+
+model = joblib.load('ml/Diabetes_model-2.pkl')
+
 def first_check_analysis(data):
-    time.sleep(2)
-    return 12345
+    features = ['gender', 'age', 'hypertension', 'heart_disease', 'smoking_history', 'bmi', 'HbA1c_level', 'blood_glucose_level']
+    custom_df = pd.DataFrame(data, columns=features)
+    y_pred = model.predict(custom_df)
+    answer = ""
+    if y_pred[0] == 1:
+        answer = "У вас есть подозрение на диабет"
+    else:
+        answer = "Аномалий не обнаружено"
+    return answer
+
 
 def on_request(ch, method, props, body):
     body = json.loads(body)

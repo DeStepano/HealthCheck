@@ -1,5 +1,5 @@
 import asyncio
-
+from core.sql_utils import connect_to_postgres, get_data_by_id, insert_data, check_user
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
@@ -16,22 +16,11 @@ router = Router()
 @router.message(CommandStart())
 async def start_command(message: Message, state: FSMContext):
     await state.clear()
-    keys = await get_hash(message.from_user.id)
-    users = sl.connect('core/users.db')
-    cur = users.cursor()
-    cur.execute("""SELECT COUNT(*) FROM users WHERE key = ? AND additional_key = ?""", (keys[0], keys[1]))
-    row_count = cur.fetchone()[0]
-    cur.close()
-    users.close()
-
-    if(row_count > 0):
-        users = sl.connect('core/users.db')
-        cur = users.cursor()
-        cur.execute("""SELECT name FROM users WHERE key = ? AND additional_key = ?""", (keys[0], keys[1]))
-        row = cur.fetchone()
-        cur.close()
-        users.close()
-        await message.answer(F"Привет, {row[0]}!", reply_markup=keyboards.main_kb)
+    user_id = message.from_user.id
+    user = await check_user(user_id)
+    if(user > 0):
+        name = await get_data_by_id("SELECT name FROM users WHERE key = $1 AND additional_key = $2", user_id)
+        await message.answer(F"Привет, {name[0]}!", reply_markup=keyboards.main_kb)
 
     else:
         await message.answer("Привет, я бот, позволяющий выявлять наличие заболеваний, основываясь на результатах опросов и изображений медецинских анализов. Чтобы пользоваться мной, необходимо зарегистрироваться!",

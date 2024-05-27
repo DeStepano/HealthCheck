@@ -7,7 +7,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from core.keyboards import keyboards
 from core.hash import get_hash
-
+from core.sql_utils import check_data, delete_user, get_data_by_id
 
 router = Router()
 
@@ -18,19 +18,16 @@ async def change_user_data(message: Message, state: FSMContext):
 
 @router.message(Command("Точно_удалить"))
 async def change_user_data(message: Message, state: FSMContext):
-    keys = await get_hash(message.from_user.id)
-    users = sl.connect('core/users.db')
-    cursor = users.cursor()
-    brain_image = cursor.execute("""SELECT brain_image FROM users WHERE key = ? AND additional_key = ?""", keys).fetchone()[0]
-    if brain_image != None:
-        os.remove(f"{brain_image}")
-    xray_image = cursor.execute("""SELECT xray_image FROM users WHERE key = ? AND additional_key = ?""", keys).fetchone()[0]
-    if xray_image != None:
-        os.remove(f"{xray_image}")
-    cursor.execute("DELETE FROM users WHERE key = ? AND additional_key = ?", keys)
-    users.commit()
-    cursor.close()
-    users.close()
+    user_id = message.from_user.id
+    brain_image = await check_data("SELECT brain_image FROM users WHERE key = $1 AND additional_key = $2", user_id)
+    xray_image = await check_data("SELECT xray_image FROM users WHERE key = $1 AND additional_key = $2", user_id)
+    if brain_image:
+        path_brain_image = await get_data_by_id("SELECT brain_image FROM users WHERE key = $1 AND additional_key = $2", user_id)
+        os.remove(f"{path_brain_image[0]}")
+    if xray_image:
+        path_xray_image = await get_data_by_id("SELECT xray_image FROM users WHERE key = $1 AND additional_key = $2", user_id)
+        os.remove(f"{path_xray_image[0]}")
+    await delete_user(user_id)
     await message.answer("Успешно", reply_markup=keyboards.registration_kb)
 
 

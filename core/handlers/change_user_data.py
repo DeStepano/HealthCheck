@@ -7,6 +7,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from core.hash import get_hash
+from core.sql_utils import insert_data
 
 class Form(StatesGroup):
     new_name = State()
@@ -43,26 +44,13 @@ async def get_age(message: Message, state: FSMContext):
 @router.message(Form.new_sex, F.text.casefold().in_(["парень", "девушка"]))
 async def get_sex(message: Message, state: FSMContext):
     await state.update_data(sex=message.text)
-    await message.answer("Данные изменены", reply_markup=keyboards.main_kb)
+    user_id = message.from_user.id
     data = await state.get_data()
-    await state.clear()
-
-    key, additional_key = await get_hash(message.from_user.id)
-    formatted_text = []
-    for key, value in data.items():
-        formatted_text.append(f"{key}: {value}")
-
     name, age, sex = data.values()
-    
-    await message.answer(F" имя: {name} \nвозраст: {age} \nпол: {sex}")
-    users = sl.connect('core/users.db')
-    cursor = users.cursor()
-    cursor.execute("""UPDATE users SET name = ? WHERE key = ? AND additional_key = ?""", (name, key, additional_key) )
-    cursor.execute("""UPDATE users SET age = ? WHERE key = ? AND additional_key = ?""", (age, key, additional_key))
-    cursor.execute("""UPDATE users SET sex = ? WHERE key = ? AND additional_key = ?""", (sex, key, additional_key))
-    users.commit()
-    cursor.close()
-    users.close()
+    data = (name, int(age), sex)
+    await state.clear()
+    await insert_data("UPDATE users SET name = $3, age = $4, sex = $5 where key = $1 and additional_key = $2", data, user_id)
+    await message.answer("Данные изменены", reply_markup=keyboards.main_kb)
 
 
 @router.message(Command("/Главное меню"))

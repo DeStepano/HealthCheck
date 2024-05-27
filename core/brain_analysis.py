@@ -13,7 +13,7 @@ from torchvision import models
 from torch import nn
 
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.host))
+    pika.ConnectionParameters(host=config.rcp_host))
 
 channel = connection.channel()
 channel.queue_declare(queue=config.brain_analysis_queue)
@@ -77,7 +77,7 @@ def brain_analysis(image):
         if prediction == torch.tensor([0]):
             ans = "Обнаружена менингиома, советуем обратиться к специалисту"
         elif prediction == torch.tensor([1]):
-            ans = "Обнаружена глинома, советуем обратиться к специалисту"
+            ans = "Обнаружена глиома, советуем обратиться к специалисту"
         elif prediction == torch.tensor([2]):
             ans = "Обнаружена аномалия в гипофизе, советуем обратиться к специалисту"
         else:
