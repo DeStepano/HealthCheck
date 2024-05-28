@@ -53,6 +53,51 @@ def get_data_diabetes():
     return jsonify(results)
 
 
+@app.route('/glioma')
+def get_data_diabetes():
+    results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='glioma'))
+    def to_dict(hospital):
+        return {"name": hospital[0].name, "disease": hospital[0].disease, "city": hospital[0].city, "adress": hospital[0].adress, "link": hospital[0].link ,"coord_x": hospital[0].coord_x, "coord_y": hospital[0].coord_y}
+    results = tuple(map(to_dict, results))
+    return jsonify(results)
+
+
+@app.route('/meningioma')
+def get_data_diabetes():
+    results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='meningioma'))
+    def to_dict(hospital):
+        return {"name": hospital[0].name, "disease": hospital[0].disease, "city": hospital[0].city, "adress": hospital[0].adress, "link": hospital[0].link ,"coord_x": hospital[0].coord_x, "coord_y": hospital[0].coord_y}
+    results = tuple(map(to_dict, results))
+    return jsonify(results)
+
+
+@app.route('/acute_laryngitis')
+def get_data_acute_laryngitis():
+    results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='acute_laryngitis'))
+    def to_dict(hospital):
+        return {"name": hospital[0].name, "disease": hospital[0].disease, "city": hospital[0].city, "adress": hospital[0].adress, "link": hospital[0].link ,"coord_x": hospital[0].coord_x, "coord_y": hospital[0].coord_y}
+    results = tuple(map(to_dict, results))
+    return jsonify(results)
+
+
+@app.route('/bronchitis')
+def get_data_bronchitis():
+    results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='bronchitis'))
+    def to_dict(hospital):
+        return {"name": hospital[0].name, "disease": hospital[0].disease, "city": hospital[0].city, "adress": hospital[0].adress, "link": hospital[0].link ,"coord_x": hospital[0].coord_x, "coord_y": hospital[0].coord_y}
+    results = tuple(map(to_dict, results))
+    return jsonify(results)
+
+
+@app.route('/hiv')
+def get_hiv():
+    results = db.session.execute(db.select(Hospital).filter_by(city='Saint Petersburg', disease='hiv'))
+    def to_dict(hospital):
+        return {"name": hospital[0].name, "disease": hospital[0].disease, "city": hospital[0].city, "adress": hospital[0].adress, "link": hospital[0].link ,"coord_x": hospital[0].coord_x, "coord_y": hospital[0].coord_y}
+    results = tuple(map(to_dict, results))
+    return jsonify(results)
+
+
 @app.route('/web_app')
 def web_app():
     name_disease = request.args.get('name_disease')

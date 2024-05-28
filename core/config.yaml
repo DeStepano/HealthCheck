@@ -7,6 +7,7 @@ rcp_client:
     xray_queue: xray_queue
     first_check_queue: first_check
     second_check_queue: second_check
+    fullcheck_queue: fullcheck
 
 users_db:
   host: 'localhost'

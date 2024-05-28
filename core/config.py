@@ -12,6 +12,7 @@ class Config(object):
             self.xray_queue = self.queues['xray_queue']
             self.first_check_queue = self.queues['first_check_queue']
             self.second_check_queue = self.queues['second_check_queue']
+            self.fullcheck_queue = self.queues['fullcheck_queue']
             self.users_db = data['users_db']
             self.users_db_host = self.users_db['host']
             self.user_db_port = self.users_db['port']

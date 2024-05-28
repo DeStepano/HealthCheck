@@ -25,7 +25,7 @@ class Form(StatesGroup):
 
 global bot
 
-@router.message(Command("Болезнь_1"), StateFilter(States.check_diseases_command))
+@router.message(Command("Заболевания_мозга"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):
     await state.set_state(Form.photo_brain)
     await message.answer("Прикрепите фото вашего МРТ размера не меньше 150*150", reply_markup=keyboards.diagnostic_kb)

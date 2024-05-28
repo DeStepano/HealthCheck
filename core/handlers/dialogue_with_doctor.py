@@ -11,7 +11,7 @@ from core.config import config
 from core.states import States
 from core.keyboards import keyboards
 import random
-
+from core.sql_utils import get_doctor_by_disease
 from main import bot
 
 router = Router()
@@ -24,36 +24,15 @@ router = Router()
 # ]
 
 
-# doctors = sl.connect('core/doctors.db')
-# doctors_cursor = doctors.cursor()
-
-
-# doctors_cursor.executemany("INSERT INTO doctors (username, firstname, surname, city, work_address, name_organization, disease) VALUES (?, ?, ?, ?, ?, ?, ?)", data)
-# doctors.commit()
-
-async def get_doctor_id(disease: str):
-    doctors = sl.connect('core/doctors.db')
-    doctors_cursore = doctors.cursor()
-    doctors_cursore.execute(f"SELECT * FROM doctors WHERE disease = '{disease}' ")
-    result = doctors_cursore.fetchall()
-    number = random.randint(0, len(result) - 1)
-    doctors_cursore.close()
-    doctors.close()
-    result = result[number]
-    return (result[1], result[2], result[3])
-
-
 @router.message(Command("Пневмония"), StateFilter(States.dialogue_with_doctor))
 async def pneumonia(message: Message, state: FSMContext):
-    # await state.clear()
-    doctor_data = await get_doctor_id("pneumonia")
-    username, name, surename = doctor_data
+    doctor_data = await get_doctor_by_disease("pneumonia")
+    username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
     await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')
 
 
 @router.message(Command("Диабет"), StateFilter(States.dialogue_with_doctor))
 async def diabetes(message: Message, state: FSMContext):
-    # await state.clear()
-    doctor_data = await get_doctor_id("diabetes")
-    username, name, surename = doctor_data
+    doctor_data = await get_doctor_by_disease("diabetes")
+    username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
     await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')

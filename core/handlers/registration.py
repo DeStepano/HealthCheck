@@ -5,7 +5,7 @@ import logging
 import sqlite3 as sl
 import hashlib
 import asyncio
-from core.sql_utils import get_data_by_id, insert_data
+from core.sql_utils import get_data_by_id, insert_data, insert_array, get_array
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
@@ -53,6 +53,9 @@ async def get_sex(message: Message, state: FSMContext):
     await message.answer(F"имя: {name} \nвозраст: {age} \nпол: {sex}")
     user_id = message.from_user.id
     await insert_data(f'INSERT INTO users (key, additional_key, name, age, sex) VALUES ($1, $2, $3, $4, $5)', data , user_id)
+    array = [0]*986
+    await insert_array(array, user_id)
+    # print(await get_array(user_id))
 
 
 @router.message(Form.sex)

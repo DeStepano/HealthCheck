@@ -8,6 +8,6 @@ async def get_hash(key: int) -> list:
     return [key, additional_key]
 
 
-async def get_hash_string(name):
+async def get_hash_string(name: str) -> str:
     hash_name = hashlib.sha256(str(name).encode()).hexdigest()
     return hash_name

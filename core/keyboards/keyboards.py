@@ -13,8 +13,24 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import WebAppInfo, WebAppData
 
 
-# web_app_data = WebAppData(web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=pneumonia'))
-# keyboard_button = KeyboardButton("Перейти", web_app_data=web_app_data)
+show_hospitals_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text = "/Пневмония"),
+            KeyboardButton(text = "/Диабет")
+        ],
+        [
+            KeyboardButton(text = "/ВИЧ"),
+            KeyboardButton(text = "/Ларингит")
+        ],
+        [
+            KeyboardButton(text = "/Глиома"),
+            KeyboardButton(text = "/Менингиома")
+        ],
+    ]
+)
+
+
 
 
 disease_kb = ReplyKeyboardMarkup(
@@ -54,6 +70,65 @@ web_kb_diabetes = ReplyKeyboardMarkup(
     ]
 )
 
+
+web_kb_glioma = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=glioma')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+
+web_kb_meningioma = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=meningioma')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+
+web_kb_acute_laryngitis = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=acute_laryngitis')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+
+web_kb_bronchitis = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=bronchitis')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
+
+
+web_kb_hiv = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="Перейти", web_app=WebAppInfo(url='https://healthcheck.sashak2n.beget.tech/web_app?name_disease=hiv')),
+        ],
+        [
+            KeyboardButton(text="/Главное_меню"),
+        ],
+    ]
+)
 # web_kb
 
 registration_kb = ReplyKeyboardMarkup(
@@ -70,7 +145,7 @@ registration_kb = ReplyKeyboardMarkup(
 main_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text ="/Больницы_рядом")
+            KeyboardButton(text ="/Больницы")
         ],
         [
             KeyboardButton(text="/Проверить_анализы"),
@@ -89,7 +164,10 @@ main_kb = ReplyKeyboardMarkup(
 diagnostic_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-            KeyboardButton(text="/Болезнь_1"),
+            KeyboardButton(text="/Полная_проверка")
+        ],
+        [
+            KeyboardButton(text="/Заболевания_мозга"),
             KeyboardButton(text="/Болезнь_2")
         ],
         [

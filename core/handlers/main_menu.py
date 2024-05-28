@@ -35,10 +35,11 @@ async def check_analysis(message: Message, state: FSMContext):
     await message.answer("Выберете заболевание", reply_markup=keyboards.diagnostic_kb)
 
 
-@router.message(Command("Больницы_рядом"))
+@router.message(Command("Больницы"))
 async def hospitals(message: Message, state: FSMContext):
     await state.set_state(States.show_hospitals_command)
-    await message.answer("Выберете заболевание", reply_markup=keyboards.disease_kb)
+    await message.answer("Выберете заболевание", reply_markup=keyboards.show_hospitals_kb)
+
 
 @router.message(Command("Диалог_с_врачем"))
 async def dialogue_doctor(message: Message, state: FSMContext):
