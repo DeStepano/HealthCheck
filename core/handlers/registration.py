@@ -53,7 +53,11 @@ async def get_sex(message: Message, state: FSMContext):
     await message.answer(F"имя: {name} \nвозраст: {age} \nпол: {sex}")
     user_id = message.from_user.id
     await insert_data(f'INSERT INTO users (key, additional_key, name, age, sex) VALUES ($1, $2, $3, $4, $5)', data , user_id)
-    array = [0]*986
+    array = [0]*989
+    data = await get_data_by_id("SELECT sex, age FROM users WHERE key = $1 and additional_key = $2", user_id)
+    dictionary = {"Парень": 1, "Девушка":0}
+    array[-2] = data[1]/110
+    array[-1] = dictionary[data[0]]
     await insert_array(array, user_id)
     # print(await get_array(user_id))
 

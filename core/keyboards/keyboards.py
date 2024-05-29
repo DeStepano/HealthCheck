@@ -13,6 +13,16 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import WebAppInfo, WebAppData
 
 
+fullcheck_kb = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text="/Перепройти"),
+            KeyboardButton(text="/Допройти")
+        ]
+    ]
+)
+
+
 show_hospitals_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
