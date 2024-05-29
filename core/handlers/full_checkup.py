@@ -35,6 +35,16 @@ class Form4(StatesGroup):
     q6 = State()
 
 
+class Form5(StatesGroup):
+    q1 = State()
+    q2 = State()
+    q3 = State()
+    q4 = State()
+    q5 = State()
+    q6 = State()
+    q7 = State()
+
+
 router = Router()
 
 
@@ -340,11 +350,134 @@ place_of_pain2 = '''
 '''
 
 
+color_of_rash='''504. не указать
+505. черного
+506. желтого
+507. бледного
+508. розового
+509. красного'''
+
+
+where_damaged_skin_located='''526. нигде
+527. подвздошное крыло (тазовая область)
+529. пах
+531. подмышка
+533. миндалина
+535. анус
+536. задняя сторона лодыжки
+538. затылок
+539. задняя часть шеи
+540. предплечье
+542. нижняя часть грудь
+543. бицепс
+545. рот
+546. щитовидный хрящ
+547. лодыжка
+549. клитор
+550. копчик
+551. шейный отдел позвоночника
+552. грудной отдел позвоночника
+553. поясничный отдел позвоночника
+554. спайка
+556. внешняя сторона стопы
+558. локоть
+560. подколенная ямка
+564. бедро
+566. правая сторона шеи
+567. левая сторона шеи
+568. сторона груди
+570. нижние зубы
+572. верхние зубы
+574. над языком
+575. макушка головы
+576. палец руки
+584. спинная сторона стопа
+585. тыльная сторона стопы
+587. тыльная сторона запястья
+588. тыльная сторона руки
+590. ладонная сторона предплечья
+596. бок
+600. лоб
+601. нижняя десна
+602. верхняя десна
+603. колено
+605. головка
+606. большие половые губы
+612. верхняя часть груди
+618. щека
+622. почечная ямка
+624. язычок
+625. нижняя губа
+627. подбородок
+628. икра
+630. челюсть
+631. нос
+632. затылок
+633. глаз
+635. лопатка (п)
+636. лопатка (л)
+637. ухо
+646. стенка влагалища
+649. ладонь
+653. малые половые губы
+655. глотка
+656. подошва
+660. лобок
+661. пенис
+662. мошонка
+663. грудь (п)
+664. грудь (л)
+665. под языком
+666. под челюстью
+667. пятка
+669. висок
+671. яичко
+673. задняя грудная стенка
+675. большеберцовая кость
+677. трахея
+678. трапециевидная мышца
+680. трицепс
+682. уретра
+683. влагалище
+684. живот
+687. рядом с влагалищем
+688. плечо
+'''
+
+
 dictionary_of_topics={1:ans_lungs, 2: ans_heart,4:general_symptoms, 5:ans_medicines, 6:ans_women}
 
 
 @router.message(Command("Полная_проверка"), StateFilter(States.check_diseases_command))
-async def first_anwer(message: Message, state: FSMContext):
+async def first_anwer1(message: Message, state: FSMContext):
+    await message.answer("Выберете:", reply_markup=keyboards.fullcheck_kb)
+
+
+@router.message(Command("Перепройти"), StateFilter(States.check_diseases_command))
+async def first_anwer2(message: Message, state: FSMContext):
+    array = [0]*989
+    data = await get_data_by_id("SELECT sex, age FROM users WHERE key = $1 and additional_key = $2", message.from_user.id)
+    dictionary = {"Парень": 1, "Девушка":0}
+    array[-2] = data[1]/110
+    array[-1] = dictionary[data[0]]
+    await state.update_data(ans=array)
+    await state.set_state(Form3.q1)
+    await message.answer(f'''Выберете номер заболевания(отправте номера через запятую): 
+1)Проблемы с легкими
+2)Проблемы с сердечно-сосудистой системой
+3)Ваши диагнозы или диагнозы ваших родственников
+4)Общие симптомы
+5)Лекарства, которые вы принимаете
+6)Вопросы для женщин
+7)Условия жизни и работы
+8)Общие вопросы
+9)Есть ли у вас болевой синдром
+10)Повреждения кожи  
+''')
+
+
+@router.message(Command("Допройти"), StateFilter(States.check_diseases_command))
+async def first_anwer3(message: Message, state: FSMContext):
     ans = await get_array(message.from_user.id)
     await state.update_data(ans=ans)
     await state.set_state(Form3.q1)
@@ -358,35 +491,102 @@ async def first_anwer(message: Message, state: FSMContext):
 7)Условия жизни и работы
 8)Общие вопросы
 9)Есть ли у вас болевой синдром
+10)Повреждения кожи                         
 ''')
 
 
 @router.message(Form3.q1)
 async def second_answer(message: Message, state: FSMContext):
     text = message.text
-    if not text.strip().isdigit() or int(text) < 1 or int(text) > 9:
+    if not text.strip().isdigit() or int(text) < 1 or int(text) > 10:
         await message.answer("Неверный формат ввода, повторите попытку")
     else:
         if int(text) == 9:
             await state.set_state(Form4.q1)
-            await message.answer("Введите номера типов боли, которые у вас наблюдаюься")
+            await message.answer("Введите номера типов боли, которые у вас наблюдаются")
             await message.answer(types_of_pain)
             data = await state.get_data()
             ans = data.get("ans")
-            ans[53+16+1] = 1
-            ans[70+165+1] = 1
-            ans[236+11+1] = 1
-            ans[248+165+1] = 1
-            ans[414+11+1] = 1
-            ans[426+11+1] = 1
+            ans[52] = 1
+            ans[53+16] = 1
+            ans[70+165] = 1
+            ans[236+11] = 1
+            ans[248+165] = 1
+            ans[414+11] = 1
+            ans[426+11] = 1
             await state.update_data(ans=ans)
+        elif int(text)==10:
+            await state.set_state(Form5.q1)
+            data = await state.get_data()
+            ans = data.get("ans")
+            ans[504] = 1
+            ans[504+6] = 1
+            ans[511+2] = 1
+            ans[514+11] = 1
+            ans[526+165] = 1
+            ans[692+11] = 1
+            ans[704+2] = 1
+            ans[707+11] = 1
+            await message.answer("Какого цвета сыпь")
+            await message.answer(color_of_rash)
         else:
             await state.set_state(Form3.q2)
             await message.answer("Пришлите номера симптомов, которые у вас есть, через запятую")
             await message.answer(dictionary_of_topics[int(text)])
 
 
-@router.message(Form3.q2)
+@router.message(Form5.q1)
+async def color_of_rash1(message: Message, state: FSMContext):
+    text = message.text
+    correct_input = True
+    numbers =[i.strip() for i in text.split(',')]
+    for i in numbers:
+        if ((not i.isdigit()) or int(i)<1 or int(i)>986):
+            correct_input=False
+    if correct_input:
+        index = [int(i) for i in numbers]
+        data = await state.get_data()
+        ans = data.get("ans")
+        for i in index:
+            ans[i]=1
+        await state.update_data(ans=ans)
+        await state.set_state(Form5.q2)
+        await message.answer("Ваши повреждения шелушатся?")
+        await message.answer('''1.Нет
+2.Да
+''')
+        
+@router.message(Form5.q2)
+async def peeling(message: Message, state: FSMContext):
+    text = message.text
+    if (not text.isdigit())  or (  int(text)!=1 and int(text)!=2):
+        await message.answer("Введите заново")
+    else:
+        data = await state.get_data()
+        ans = data.get("ans")
+        ans[511-1 - int(text)] = 1
+        await state.set_state(Form5.q3)
+        await state.update_data(ans=ans)
+        await message.answer("Сыпь опухла? Оцените от 0 до 10")
+        
+
+
+@router.message(Form5.q3)
+async def rash_is_swollen(message: Message, state: FSMContext):
+    text = message.text.strip()
+    if text.isdigit() and int(text)>=0 and int(text) <=10:
+        data = await state.get_data()
+        ans = data.get("ans")
+        ans[int(text) + 514] = 1
+        await state.update_data(ans=ans)
+        await state.set_state(Form5.q4)
+        await message.answer("Где находится пострадавшая кожа?")
+        await message.answer(where_damaged_skin_located)
+    else:
+        await message.answer("Введите заново")
+
+
+@router.message(Form5.q4)
 async def third_answer(message: Message, state: FSMContext):
     text = message.text
     correct_input = True
@@ -401,11 +601,82 @@ async def third_answer(message: Message, state: FSMContext):
         ans = data.get("ans")
         index = [int(i) for i in numbers]
         for i in index:
-            ans[i-1] = 1
+            ans[i] = 1
+        await state.update_data(ans=ans)
+        await state.set_state(Form5.q5)
+        await message.answer("Насколько сильна боль, вызванная сыпью? Оцените от 0 до 10")
+    else:
+        await message.answer("Неправильный формат ввода, повторите попытку")
+
+
+@router.message(Form5.q5)
+async def pain_caused_rash(message: Message, state: FSMContext):
+    text = message.text.strip()
+    if text.isdigit() and int(text)>=0 and int(text) <=10:
+        data = await state.get_data()
+        ans = data.get("ans")
+        ans[int(text) + 692] = 1
+        await state.update_data(ans=ans)
+        await state.set_state(Form5.q6)
+        await message.answer("Размер поражения кожи сыпью превышает 1 см?")
+        await message.answer('''1.Нет
+2.Да''')
+    else:
+        await message.answer("Введите заново")
+
+
+@router.message(Form5.q6)
+async def peeling(message: Message, state: FSMContext):
+    text = message.text
+    if (not text.isdigit())  or (  int(text)!=1 and int(text)!=2):
+        await message.answer("Введите заново")
+    else:
+        data = await state.get_data()
+        ans = data.get("ans")
+        ans[704-1 - int(text)] = 1
+        await state.set_state(Form5.q7)
+        await state.update_data(ans=ans)
+        await message.answer("Насколько сильный зуд? Оцените от 0 до 10")
+
+
+@router.message(Form5.q7)
+async def pain_caused_rash(message: Message, state: FSMContext):
+    text = message.text.strip()
+    if text.isdigit() and int(text)>=0 and int(text) <=10:
+        data = await state.get_data()
+        ans = data.get("ans")
+        ans[int(text) + 707] = 1
+        await state.update_data(ans=ans)
         await insert_array(ans, message.from_user.id)
         await state.set_state(States.check_diseases_command)
         await message.answer("Начат анализ")
-        print("ДА")
+        data = json.dumps(ans)
+        response = json.loads(rpcClient.call(data, config.fullcheck_queue))
+        await message.answer(f"Ваш результат: {response}", reply_markup=keyboards.diagnostic_kb)
+        await insert_data("UPDATE users SET fullcheck_result = $3 WHERE key = $1 AND additional_key = $2", (response,), message.from_user.id)
+    else:
+        await message.answer("Введите заново")
+
+
+@router.message(Form3.q2)
+async def third_answer(message: Message, state: FSMContext):
+    text = message.text
+    correct_input = True
+    numbers =[i.strip() for i in text.split(',')]
+    
+    for i in numbers:
+        if ((not i.isdigit()) or int(i)<1 or int(i)>989):
+            correct_input=False
+
+    if correct_input:
+        data = await state.get_data()
+        ans = data.get("ans")
+        index = [int(i) for i in numbers]
+        for i in index:
+            ans[i] = 1
+        await insert_array(ans, message.from_user.id)
+        await state.set_state(States.check_diseases_command)
+        await message.answer("Начат анализ")
         data = json.dumps(ans)
         response = json.loads(rpcClient.call(data, config.fullcheck_queue))
         await message.answer(f"Ваш результат: {response}", reply_markup=keyboards.diagnostic_kb)
@@ -423,10 +694,11 @@ async def fourth_answer(message: Message, state: FSMContext):
         if ((not i.isdigit()) or int(i)<1 or int(i)>986):
             correct_input=False
     if correct_input:
-        for i in numbers:
-            data = await state.get_data()
-            ans = data.get("ans")
-            ans[int(i)-1] = 1
+        index = [int(i) for i in numbers]
+        data = await state.get_data()
+        ans = data.get("ans")
+        for i in index:
+            ans[i]=1
         await state.update_data(ans=ans)
         await state.set_state(Form4.q2)
         await message.answer("Выберете места, где чувствуете боль")
@@ -442,10 +714,11 @@ async def fifth_answer(message: Message, state: FSMContext):
         if ((not i.isdigit()) or int(i)<1 or int(i)>986):
             correct_input=False
     if correct_input:
-        for i in numbers:
-            data = await state.get_data()
-            ans = data.get("ans")
-            ans[int(i)-1] = 1
+        index = [int(i) for i in numbers]
+        data = await state.get_data()
+        ans = data.get("ans")
+        for i in index:
+            ans[i]=1
         await state.update_data(ans=ans)
         await state.set_state(Form4.q3)
         await message.answer("Оцените силу боли от 0 до 10")
@@ -457,7 +730,7 @@ async def sixth_answer(message: Message, state: FSMContext):
     if text.isdigit() and int(text)>=0 and int(text) <=10:
         data = await state.get_data()
         ans = data.get("ans")
-        ans[int(text)+236]
+        ans[int(text)+236] = 1
         await state.update_data(ans=ans)
         await message.answer("Введите номера мест, куда отдает боль")
         await message.answer(place_of_pain2)
@@ -475,10 +748,11 @@ async def seventh_answer(message: Message, state: FSMContext):
         if ((not i.isdigit()) or int(i)<1 or int(i)>986):
             correct_input=False
     if correct_input:
-        for i in numbers:
-            data = await state.get_data()
-            ans = data.get("ans")
-            ans[int(i)-1] = 1
+        index = [int(i) for i in numbers]
+        data = await state.get_data()
+        ans = data.get("ans")
+        for i in index:
+            ans[i]=1
         await state.update_data(ans=ans)
         await state.set_state(Form4.q5)
         await message.answer("Насколько четкие границы локализуется боль? Оценте от 0 до 10")
@@ -512,7 +786,7 @@ async def sixth_answer(message: Message, state: FSMContext):
         data = json.dumps(ans)
         response = json.loads(rpcClient.call(data, config.fullcheck_queue))
         await message.answer(f"Ваш результат: {response}", reply_markup=keyboards.diagnostic_kb)
-        await insert_data("UPDATE users SET fullcheck_result = $3 WHERE key = $1 and additional_key = $2", response, message.from_user.id)
+        await insert_data("UPDATE users SET fullcheck_result = $3 WHERE key = $1 and additional_key = $2", (response,), message.from_user.id)
 
     else:
         await message.answer("Неправильный формат ввода, повторите попытку")
