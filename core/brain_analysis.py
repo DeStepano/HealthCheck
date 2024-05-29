@@ -11,13 +11,11 @@ import torchvision.transforms as transforms
 from torch.autograd import Variable
 from torchvision import models
 from torch import nn
-
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.rcp_host))
 
 channel = connection.channel()
 channel.queue_declare(queue=config.brain_analysis_queue)
-
 
 class AdvancedMRI_Classifier(nn.Module):
     def __init__(self, num_classes):
@@ -68,27 +66,34 @@ def brain_analysis(image):
 ])
     image = data_transforms(image)
     image = image.unsqueeze(0)
-    ans = ""
     if torch.cuda.is_available():
         images=Variable(images.cuda())
     with torch.no_grad():
         output = model(image)
         _,prediction=torch.max(output.data,1)
-        if prediction == torch.tensor([0]):
-            ans = "Обнаружена менингиома, советуем обратиться к специалисту"
-        elif prediction == torch.tensor([1]):
-            ans = "Обнаружена глиома, советуем обратиться к специалисту"
-        elif prediction == torch.tensor([2]):
-            ans = "Обнаружена аномалия в гипофизе, советуем обратиться к специалисту"
-        else:
-            ans = "Аномалий не обнаружено"
-    return ans
+        return prediction
 
 def on_request(ch, method, props, body):
     body = body[2:-1]
     decoded_data = base64.b64decode(body)
     image = Image.open(io.BytesIO(decoded_data))
-    response = json.dumps(brain_analysis(image))
+    # profiler = Profiler()
+    # profiler.start()
+    ans=""
+    prediction = brain_analysis(image)
+    if prediction == torch.tensor([0]):
+        ans = "Обнаружена менингиома, советуем обратиться к специалисту"
+    elif prediction == torch.tensor([1]):
+        ans = "Обнаружена глиома, советуем обратиться к специалисту"
+    elif prediction == torch.tensor([2]):
+        ans = "Обнаружена аномалия в гипофизе, советуем обратиться к специалисту"
+    else:
+        ans = "Аномалий не обнаружено"
+    response = json.dumps(ans)
+    # profiler.stop()
+    # output_file = "profile_results.html"
+    # with open(output_file, "w") as f:
+    #     f.write(profiler.output_html())
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \

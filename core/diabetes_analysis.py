@@ -17,7 +17,7 @@ channel.queue_declare(queue=config.first_check_queue)
 
 model = joblib.load('ml/Diabetes_model-2.pkl')
 
-def first_check_analysis(data):
+def diabetes_analysis(data):
     features = ['gender', 'age', 'hypertension', 'heart_disease', 'smoking_history', 'bmi', 'HbA1c_level', 'blood_glucose_level']
     custom_df = pd.DataFrame(data, columns=features)
     y_pred = model.predict(custom_df)
@@ -31,7 +31,7 @@ def first_check_analysis(data):
 
 def on_request(ch, method, props, body):
     body = json.loads(body)
-    response = json.dumps(first_check_analysis(body))
+    response = json.dumps(diabetes_analysis(body))
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \

@@ -5,11 +5,14 @@ import asyncio
 from config import config
 import torch
 import torch.nn as nn
+from torch import load
+from torch.optim import Adam
 
-connection = pika.BlockingConnection(
+
+connection_fullcheck = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.rcp_host))
-channel = connection.channel()
-channel.queue_declare(queue=config.fullcheck_queue)
+channel_fullcheck = connection_fullcheck.channel()
+channel_fullcheck.queue_declare(queue=config.fullcheck_queue)
 
 class CustomModel(nn.Module):
     def __init__(self):
@@ -34,18 +37,12 @@ class CustomModel(nn.Module):
         x = self.sigmoid(x)
         return x
 
-model = CustomModel()
-criterion = nn.BCELoss()
-optimizer = torch.optim.Adam(model.parameters())
-model = torch.load('ml/full_ml.pth')
-model.eval()
+model_fullcheck = CustomModel()
+model_fullcheck = load('ml/full_ml.pth')
+model_fullcheck.eval()
 
 
-def fullcheck_analysis(data):
-    out = model.forward(torch.tensor(data).float()).detach().numpy()
-    # trashhold = 0.05
-    # out = (out>=trashhold).astype(int)
-    diseases = {
+diseases = {
     0: "Обострение ХОБЛ / инфекция",
     1: "Острые дистонические реакции",
     2: "Острый ларингит",
@@ -96,6 +93,13 @@ def fullcheck_analysis(data):
     47: "Вирусный фарингит",
     48: "Коклюш"
     }
+
+
+def fullcheck_analysis(data):
+    out = model_fullcheck.forward(torch.tensor(data).float()).detach().numpy()
+    trashhold = 0.10
+    out = (out>=trashhold).astype(int)
+
     ans = "Под данные симптомы больше всего подпадают данные заболевания: \n"
     f = True
     for i in range(49):
@@ -111,7 +115,13 @@ def fullcheck_analysis(data):
 
 def on_request(ch, method, props, body):
     body = json.loads(body)
+    profiler = Profiler()
+    profiler.start()
     response = json.dumps(fullcheck_analysis(body))
+    profiler.stop()
+    output_file = "profile_results_fullcheck_analysis.html"
+    with open(output_file, "w") as f:
+        f.write(profiler.output_html())
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
@@ -119,8 +129,8 @@ def on_request(ch, method, props, body):
                      body=str(response))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
-channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue=config.fullcheck_queue, on_message_callback=on_request)
+channel_fullcheck.basic_qos(prefetch_count=1)
+channel_fullcheck.basic_consume(queue=config.fullcheck_queue, on_message_callback=on_request)
 
 print(" [x] Awaiting RPC requests")
-channel.start_consuming()
+channel_fullcheck.start_consuming()
