@@ -5,7 +5,7 @@ from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 import json
-from core.rcp_client import rpcClient
+from core.rpc_client import rpcClient
 from core.config import config
 from core.sql_utils import get_data_by_id, insert_data
 from core.states import States

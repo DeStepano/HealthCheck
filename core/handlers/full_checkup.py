@@ -7,7 +7,7 @@ from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
 from core.sql_utils import insert_array, get_array, get_data_by_id, insert_data
 from core.config import config
-from core.rcp_client import rpcClient
+from core.rpc_client import rpcClient
 from core.states import States
 
 
