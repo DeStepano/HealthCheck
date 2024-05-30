@@ -21,7 +21,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 
 @router.message(Command("Настройки"))
 async def settings(message: Message):
-    await message.answer("настройки", reply_markup=keyboards.setting_kb)
+    await message.answer("Настройки", reply_markup=keyboards.setting_kb)
 
 
 @router.message(Command("Проверить_анализы"))
@@ -39,4 +39,4 @@ async def hospitals(message: Message, state: FSMContext):
 @router.message(Command("Диалог_с_врачем"))
 async def dialogue_doctor(message: Message, state: FSMContext):
     await state.set_state(States.dialogue_with_doctor)
-    await message.answer("Выберете заболевание", reply_markup=keyboards.disease_kb)
+    await message.answer("Выберете заболевание", reply_markup=keyboards.dialogue_with_doctor_kb)

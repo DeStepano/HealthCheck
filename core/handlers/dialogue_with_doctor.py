@@ -23,3 +23,24 @@ async def diabetes(message: Message, state: FSMContext):
     doctor_data = await get_doctor_by_disease("diabetes")
     username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
     await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')
+
+
+@router.message(Command("ВИЧ"), StateFilter(States.dialogue_with_doctor))
+async def diabetes(message: Message, state: FSMContext):
+    doctor_data = await get_doctor_by_disease("hiv")
+    username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
+    await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')
+
+
+@router.message(Command("Ларингит"), StateFilter(States.dialogue_with_doctor))
+async def diabetes(message: Message, state: FSMContext):
+    doctor_data = await get_doctor_by_disease("laryngitis")
+    username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
+    await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')
+
+
+@router.message(Command("МРТ"), StateFilter(States.dialogue_with_doctor))
+async def diabetes(message: Message, state: FSMContext):
+    doctor_data = await get_doctor_by_disease("MRI")
+    username, name, surename = doctor_data['username'], doctor_data['firstname'], doctor_data['surename']
+    await message.answer(f'Перейдите в диалог: {username}, {name} {surename}')

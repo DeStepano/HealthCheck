@@ -10,6 +10,26 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import WebAppInfo, WebAppData
 
 
+dialogue_with_doctor_kb = ReplyKeyboardMarkup(
+     keyboard=[
+        [
+            KeyboardButton(text = "/Пневмония"),
+            KeyboardButton(text = "/Диабет")
+        ],
+        [
+            KeyboardButton(text = "/ВИЧ"),
+            KeyboardButton(text = "/Ларингит")
+        ],
+        [
+            KeyboardButton(text = "МРТ")
+        ],
+        [
+            KeyboardButton(text = "/Главное_меню")
+        ],
+    ]
+)
+
+
 fullcheck_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -33,6 +53,9 @@ show_hospitals_kb = ReplyKeyboardMarkup(
         [
             KeyboardButton(text = "/Глиома"),
             KeyboardButton(text = "/Менингиома")
+        ],
+        [
+            KeyboardButton(text = "/Главное_меню")
         ],
     ]
 )
