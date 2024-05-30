@@ -1,9 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-import logging
-import sqlite3 as sl
-import asyncio
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
@@ -12,6 +9,7 @@ from core.rcp_client import rpcClient
 from core.config import config
 from core.sql_utils import get_data_by_id, insert_data
 from core.states import States
+
 
 class Form2(StatesGroup):
     hypertension = State()

@@ -1,30 +1,20 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 import json
-import logging
-import sqlite3 as sl
-import asyncio
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from aiogram.types import ReplyKeyboardRemove
-from core.hash import get_hash
-from aiogram import F
-from typing import Optional
-from aiogram.filters.callback_data import CallbackData
 from core.sql_utils import insert_array, get_array, get_data_by_id, insert_data
 from core.config import config
 from core.rcp_client import rpcClient
 from core.states import States
-from core import states
-from aiogram.types import(
-    CallbackQuery
-)
+
 
 class Form3(StatesGroup):
     q1 = State()
     q2 = State()
+
 
 class Form4(StatesGroup):
     q1 = State()

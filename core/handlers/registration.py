@@ -1,23 +1,20 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-
-import logging
-import sqlite3 as sl
-import hashlib
-import asyncio
-from core.sql_utils import get_data_by_id, insert_data, insert_array, get_array
-from aiogram import Bot, Dispatcher, F, Router
+from core.sql_utils import get_data_by_id, insert_data, insert_array
+from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from core.hash import get_hash
+
 
 class Form(StatesGroup):
     name = State()
     age = State()
     sex = State()
 
+
 router=Router()
+
 
 @router.message(Command("Зарегистрироваться"), StateFilter(None))
 async def registration(message: Message, state: FSMContext):
@@ -59,7 +56,6 @@ async def get_sex(message: Message, state: FSMContext):
     array[-2] = data[1]/110
     array[-1] = dictionary[data[0]]
     await insert_array(array, user_id)
-    # print(await get_array(user_id))
 
 
 @router.message(Form.sex)

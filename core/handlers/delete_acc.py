@@ -1,15 +1,14 @@
 from aiogram.fsm.context import FSMContext
-import sqlite3 as sl
-import asyncio
 import os
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command
 from core.keyboards import keyboards
-from core.hash import get_hash
 from core.sql_utils import check_data, delete_user, get_data_by_id
 
+
 router = Router()
+
 
 @router.message(Command("Удалить_аккаунт"))
 async def change_user_data(message: Message, state: FSMContext):

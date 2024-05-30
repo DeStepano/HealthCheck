@@ -1,7 +1,5 @@
 import json
 import pika
-import time
-import asyncio
 from PIL import Image
 import io
 import base64
@@ -11,11 +9,13 @@ import torchvision.transforms as transforms
 from torch.autograd import Variable
 from torchvision import models
 from torch import nn
+
+
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.rcp_host))
-
 channel = connection.channel()
 channel.queue_declare(queue=config.brain_analysis_queue)
+
 
 class AdvancedMRI_Classifier(nn.Module):
     def __init__(self, num_classes):
@@ -73,12 +73,11 @@ def brain_analysis(image):
         _,prediction=torch.max(output.data,1)
         return prediction
 
+
 def on_request(ch, method, props, body):
     body = body[2:-1]
     decoded_data = base64.b64decode(body)
     image = Image.open(io.BytesIO(decoded_data))
-    # profiler = Profiler()
-    # profiler.start()
     ans=""
     prediction = brain_analysis(image)
     if prediction == torch.tensor([0]):
@@ -90,10 +89,6 @@ def on_request(ch, method, props, body):
     else:
         ans = "Аномалий не обнаружено"
     response = json.dumps(ans)
-    # profiler.stop()
-    # output_file = "profile_results.html"
-    # with open(output_file, "w") as f:
-    #     f.write(profiler.output_html())
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
@@ -101,8 +96,8 @@ def on_request(ch, method, props, body):
                      body=str(response))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
+
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue=config.brain_analysis_queue, on_message_callback=on_request)
-
 print(" [x] Awaiting RPC requests")
 channel.start_consuming()

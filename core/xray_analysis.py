@@ -1,25 +1,20 @@
 import json
 import pika
-import time
-import asyncio
-from PIL import Image
-import io
 import base64
 from config import config
 import cv2
 import numpy as np
 import tensorflow as tf
-import os
-import numpy
+
 
 model = tf.keras.models.load_model("ml/x_ray_effnet_b1.h5")
 
+
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.rcp_host))
-
 channel = connection.channel()
-
 channel.queue_declare(queue=config.xray_queue)
+
 
 def xray_analysis(image):
     image_size = 128
@@ -32,6 +27,7 @@ def xray_analysis(image):
     predict_in = np.array(predict_in)  
     prediction = model.predict(predict_in)
     return prediction[0][0]
+
 
 def on_request(ch, method, props, body):
     body = body[2:-1]
@@ -51,8 +47,8 @@ def on_request(ch, method, props, body):
                      body=str(response))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
+
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue=config.xray_queue, on_message_callback=on_request)
-
 print(" [x] Awaiting RPC requests")
 channel.start_consuming()

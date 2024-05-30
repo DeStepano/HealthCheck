@@ -14,6 +14,7 @@ connection_fullcheck = pika.BlockingConnection(
 channel_fullcheck = connection_fullcheck.channel()
 channel_fullcheck.queue_declare(queue=config.fullcheck_queue)
 
+
 class CustomModel(nn.Module):
     def __init__(self):
         super(CustomModel, self).__init__()
@@ -36,6 +37,7 @@ class CustomModel(nn.Module):
         x = self.fc4(x)
         x = self.sigmoid(x)
         return x
+
 
 model_fullcheck = CustomModel()
 model_fullcheck = load('ml/full_ml.pth')
@@ -99,29 +101,20 @@ def fullcheck_analysis(data):
     out = model_fullcheck.forward(torch.tensor(data).float()).detach().numpy()
     trashhold = 0.10
     out = (out>=trashhold).astype(int)
-
     ans = "Под данные симптомы больше всего подпадают данные заболевания: \n"
     f = True
     for i in range(49):
         if out[i] >0:
             ans+=diseases[i] +' ' + str(round(out[i], 3)) + '\n'
             f=False
-
     if f:
         ans = "Заболевание не определено"
-
     return ans
 
 
 def on_request(ch, method, props, body):
     body = json.loads(body)
-    profiler = Profiler()
-    profiler.start()
     response = json.dumps(fullcheck_analysis(body))
-    profiler.stop()
-    output_file = "profile_results_fullcheck_analysis.html"
-    with open(output_file, "w") as f:
-        f.write(profiler.output_html())
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
                      properties=pika.BasicProperties(correlation_id = \
@@ -129,8 +122,8 @@ def on_request(ch, method, props, body):
                      body=str(response))
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
+
 channel_fullcheck.basic_qos(prefetch_count=1)
 channel_fullcheck.basic_consume(queue=config.fullcheck_queue, on_message_callback=on_request)
-
 print(" [x] Awaiting RPC requests")
 channel_fullcheck.start_consuming()

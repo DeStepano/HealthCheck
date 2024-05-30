@@ -1,13 +1,11 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-import sqlite3 as sl
-import asyncio
 from aiogram import F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-from core.hash import get_hash
 from core.sql_utils import insert_data
+
 
 class Form(StatesGroup):
     new_name = State()

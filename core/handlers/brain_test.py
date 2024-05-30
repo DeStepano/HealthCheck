@@ -2,7 +2,6 @@ from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 import sqlite3 as sl
 import uuid
-import asyncio
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
@@ -15,15 +14,15 @@ from core.config import config
 from core.states import States
 from PIL import Image
 from core.hash import get_hash_string
-import io
-router = Router()
 
+
+router = Router()
 dp = Dispatcher()
+global bot
 
 class Form(StatesGroup):
     photo_brain = State()
 
-global bot
 
 @router.message(Command("Заболевания_мозга"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):

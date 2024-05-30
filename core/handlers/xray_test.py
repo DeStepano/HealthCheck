@@ -1,8 +1,6 @@
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-import sqlite3 as sl
 import uuid
-import asyncio
 from aiogram import Bot, Dispatcher, F, Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
@@ -17,13 +15,14 @@ from core.config import config
 from core.states import States
 import numpy as np
 
+
 router = Router()
 dp = Dispatcher()
+global bot
 
 class Form(StatesGroup):
     photo_xray = State()
 
-global bot
 
 @router.message(Command("Флюорография"), StateFilter(States.check_diseases_command))
 async def settings(message: Message, state: FSMContext):
@@ -62,6 +61,7 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
         result = json.loads(rpcClient.call(encoded_data, config.xray_queue))
         await insert_data('UPDATE users SET xray_result = $3 WHERE key = $1 AND additional_key = $2', (result,), user_id)
         await message.answer(f"Ваш результат: {result}")
+
 
 @router.message(Form.photo_xray)
 async def incorrect_photo(message: Message):

@@ -1,14 +1,12 @@
-import asyncio
-from core.sql_utils import connect_to_postgres, get_data_by_id, insert_data, check_user
-from aiogram import Bot, Dispatcher, F, Router
+from core.sql_utils import get_data_by_id, check_user
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command, CommandStart
 from aiogram.fsm.context import FSMContext
-import sqlite3 as sl
 import logging
-from core.hash import get_hash
 from core.keyboards import keyboards
 logging.basicConfig(level=logging.INFO)
+
 
 router = Router()
 

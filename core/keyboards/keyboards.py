@@ -1,9 +1,6 @@
 from aiogram.types import(
     ReplyKeyboardMarkup,
     KeyboardButton,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-    KeyboardButtonPollType,
     ReplyKeyboardRemove
 )
 from magic_filter import F
@@ -39,8 +36,6 @@ show_hospitals_kb = ReplyKeyboardMarkup(
         ],
     ]
 )
-
-
 
 
 disease_kb = ReplyKeyboardMarkup(
@@ -139,7 +134,7 @@ web_kb_hiv = ReplyKeyboardMarkup(
         ],
     ]
 )
-# web_kb
+
 
 registration_kb = ReplyKeyboardMarkup(
     keyboard=[
@@ -178,7 +173,6 @@ diagnostic_kb = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(text="/Заболевания_мозга"),
-            KeyboardButton(text="/Болезнь_2")
         ],
         [
             KeyboardButton(text="/Диабет"),

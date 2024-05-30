@@ -1,10 +1,4 @@
 import asyncpg
-import asyncio
-import pytest
-import time
-import pytest_asyncio
-import hashlib
-import sqlite3 as sl
 from core.config import config
 from core.hash import get_hash
 import json
@@ -65,6 +59,7 @@ async def create_doctors_table(conn):
                     )'''
         )
 
+
 async def get_doctor_by_disease(name_disease):
     conn = await connect_to_postgres()
     async with conn.transaction():
@@ -75,20 +70,6 @@ async def get_doctor_by_disease(name_disease):
         number = random.randint(0, number_lines[0] - 1)
         ans = {'username': ans[number]['username'],'surename': ans[number]['surname'],'firstname': ans[number]['firstname']}
         return ans
-    
-
-# async def show_table():
-#     conn = await connect_to_postgres()
-#     async with conn.transaction():
-#         cursor = await conn.cursor("SELECT COUNT(*) FROM doctors WHERE disease = 'diabetes'")
-#         number_lines = await cursor.fetchrow()
-#         cursor = await conn.cursor("SELECT * FROM doctors where disease = 'diabetes' ")
-#         ans = await cursor.fetch(number_lines[0])
-#         print(ans)
-
-
-    await conn.close()
-
 
 
 async def insert_doctor(data):
@@ -129,6 +110,7 @@ async def check_user( user_id):
         else:
             return False
         
+
 async def check_data(query, user_id):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
@@ -139,6 +121,7 @@ async def check_data(query, user_id):
         else:
             return False
         
+
 async def delete_user(user_id):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
@@ -150,15 +133,8 @@ async def delete_user(user_id):
 
 
 async def drop_table(conn):
-    """Удаляет таблицу."""
     async with conn.transaction():
         await conn.execute(f"DROP TABLE IF EXISTS users")
-
-
-async def drop_doctors_table(conn):
-    """Удаляет таблицу."""
-    async with conn.transaction():
-        await conn.execute(f"DROP TABLE IF EXISTS doctors")
 
 
 async def insert_array(array, user_id):
@@ -177,91 +153,8 @@ async def get_array(user_id):
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
         res = await conn.fetchrow("SELECT fullcheck FROM users WHERE key = $1 and additional_key = $2", key, additional_key)
-        # print(res[0])
         array = json.loads(res[0])["numbers"]
-        # print(array)
         return array
-# async def fill_array(user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         data = [0]*986
-#         json_data = f'{{"numbers": {data}}}'
-#         await conn.execute("UPDATE users SET fullcheck = $1 WHERE key = $2 AND additional_key = $3", json_data, key, additional_key)
 
-
-# async def insert_data_by_index(index, data, user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         await conn.execute(
-#             """
-#             UPDATE users 
-#             SET fullcheck = jsonb_set(fullcheck, '{numbers, ' || ($1 + 1) || '}', $2, create_missing := true) 
-#             WHERE key = $3 and additional_key = $4
-#             """,
-#             index, data, key, additional_key
-#         )
-
-# async def insert_data_by_index(index, data, user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         await conn.execute("UPDATE users SET fullcheck = jsonb_set(fullcheck, '{numbers, 2}', '10', create_missing := true) WHERE key = $1 and additional_key = $2", key, additional_key)
-
-
-# async def insert_data_by_index(index, data, user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         string = await get_data_by_id("SELECT fullcheck FROM user WHERE key = $1 and additional_key = $2", user_id)
-#         string = str(string[0])
-#         string[index] = data
-#         print(string)
-#         await insert_data("UPDATE users SET fullcheck = $1 WHERE key = $2 AND additional_key = $3", string, user_id)
-    
-
-# async def fill_string(user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     data = "0"*986
-#     async with conn.transaction():
-#         await conn.execute(
-#             "UPDATE users SET fullcheck = $1 WHERE key = $2 AND additional_key = $3",
-#             data, key, additional_key
-#         )
-
-# async def get_data_by_index(index, user_id):
-
-# async def insert_data_by_index(index, data, user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         await conn.execute(
-#             f"UPDATE users SET fullcheck[{index}] = $1 WHERE key = $2 AND additional_key = $3",
-#             data, key, additional_key
-#         )
-
-
-# async def fill_array(user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         await conn.execute("UPDATE users SET fullcheck = ARRAY(SELECT 0 FROM generate_series(1, 986)) WHERE key = $1 AND additional_key = $2",
-#             key, additional_key
-#         )
-
-
-# async def get_data_by_index(index, user_id):
-#     conn = await connect_to_postgres()
-#     key, additional_key = await get_hash(user_id)
-#     async with conn.transaction():
-#         async with conn.cursor(query=f"SELECT fullcheck[{index + 1}] FROM users WHERE key = $1 AND additional_key = $2") as cur:
-#             await cur.execute(key, additional_key)
-#             row = await cur.fetchone()
-#             if row:
-#                 return row[0]  # Возвращаем значение из массива
-#             else:
-#                 return None  # Возвращаем None, если запись не найдена
         
     

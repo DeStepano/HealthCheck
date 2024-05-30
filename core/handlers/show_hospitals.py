@@ -1,21 +1,14 @@
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-import sqlite3 as sl
-
-import asyncio
-
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import Router
 from aiogram.types import Message
 from aiogram.filters import Command, StateFilter
 from core.keyboards import keyboards
-import json
-from core.rcp_client import RpcClient
-from core.config import config
 from core.states import States
-from aiogram.types import WebAppInfo
 from core.keyboards import keyboards
 
+
 router = Router()
+
 
 @router.message(Command("Пневмония"), StateFilter(States.show_hospitals_command))
 async def show_pneumonia(message: Message, state: FSMContext):

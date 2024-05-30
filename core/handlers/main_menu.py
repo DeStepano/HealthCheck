@@ -1,18 +1,13 @@
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
-
-import logging
-import sqlite3 as sl
-
-import asyncio
-
-from aiogram import Bot, Dispatcher, F, Router
+from aiogram import F, Router
 from aiogram.types import Message
-from aiogram.filters import Command, StateFilter
+from aiogram.filters import Command
 from core.keyboards import keyboards
 from core.states import States
 
+
 router = Router()
+
 
 @router.message(Command("Главное_меню"))
 @router.message(F.text.lower() == "отмена")

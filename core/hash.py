@@ -1,5 +1,4 @@
 import hashlib
-import sqlite3 as sl
 
 async def get_hash(key: int) -> list:
     hash_id = int(hashlib.sha256(str(key).encode()).hexdigest(),16)

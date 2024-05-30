@@ -2,6 +2,7 @@ import uuid
 import pika
 from core.config import config
 
+
 class RpcClient(object):
     def __init__(self):
         self.connection = pika.BlockingConnection(

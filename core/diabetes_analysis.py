@@ -1,21 +1,20 @@
 import json
 import pika
-import time
-import asyncio
 import pandas as pd
 from config import config
 import torch
 from xgboost import XGBClassifier
 import joblib
+
+
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=config.rcp_host))
-
 channel = connection.channel()
-
 channel.queue_declare(queue=config.first_check_queue)
 
 
 model = joblib.load('ml/Diabetes_model-2.pkl')
+
 
 def diabetes_analysis(data):
     features = ['gender', 'age', 'hypertension', 'heart_disease', 'smoking_history', 'bmi', 'HbA1c_level', 'blood_glucose_level']
