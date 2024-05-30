@@ -1,7 +1,7 @@
-TOKEN: 6784935190:AAGjACc8mOkEzAd-RRi6R0j7J_Uq1dYApqs
+TOKEN: your bot token
 
 rcp_client:
-  host: localhost
+  host: your hostname
   queues:
     brain_queue: brain_queue
     xray_queue: xray_queue
@@ -10,8 +10,8 @@ rcp_client:
     fullcheck_queue: fullcheck
 
 users_db:
-  host: 'localhost'
-  port: '5432'
-  user: 'sasha'
-  password: '123456'
-  database: 'database'
+  host: 'your postgres host'
+  port: 'your postgres port'
+  user: 'your postgres username'
+  password: 'your postgres password'
+  database: 'your database name'
