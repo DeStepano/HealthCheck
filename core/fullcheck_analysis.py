@@ -10,7 +10,7 @@ from torch.optim import Adam
 
 
 connection_fullcheck = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.rcp_host))
+    pika.ConnectionParameters(host=config.rpc_host))
 channel_fullcheck = connection_fullcheck.channel()
 channel_fullcheck.queue_declare(queue=config.fullcheck_queue)
 

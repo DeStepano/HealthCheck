@@ -1,6 +1,6 @@
 TOKEN: your bot token
 
-rcp_client:
+rpc_client:
   host: your hostname
   queues:
     brain_queue: brain_queue

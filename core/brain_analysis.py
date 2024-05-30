@@ -12,7 +12,7 @@ from torch import nn
 
 
 connection = pika.BlockingConnection(
-    pika.ConnectionParameters(host=config.rcp_host))
+    pika.ConnectionParameters(host=config.rpc_host))
 channel = connection.channel()
 channel.queue_declare(queue=config.brain_analysis_queue)
 
