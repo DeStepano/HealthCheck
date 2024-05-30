@@ -79,3 +79,31 @@ def test_first_sample():
             _,prediction=torch.max(output.data,1)
             print(prediction)
             assert prediction == torch.tensor([3])
+
+
+def test_inference_batch():
+    ans = [2,1,3,0,0,0,3,3,1,0,0,3,3,1,0]
+    for i in range(0,15):
+        i=i%15
+        file_path = ""
+        if i<10:
+            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain_test_images/{i}.png"
+        else:
+            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain_test_images/{i}.jpeg"
+        with open(file_path, 'rb') as file:
+            photo = file.read()
+            image = Image.open(io.BytesIO(photo))
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            data_transforms = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor(),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+        ])
+            image = data_transforms(image)
+            image = image.unsqueeze(0)
+            if torch.cuda.is_available():
+                images=Variable(images.cuda())
+            with torch.no_grad():
+                output = model(image)
+                _,prediction=torch.max(output.data,1)
+                assert prediction == torch.tensor([ans[i]])
