@@ -1,0 +1,17 @@
+Filename: /home/sasha/health_checker/HealthCheck/test/test_model/test_memory_usage_diabetes_analysis.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    14    376.0 MiB    376.0 MiB           1   @profile
+    15                                         def diabetes_analysis(data):
+    16    376.0 MiB      0.0 MiB           1       features = ['gender', 'age', 'hypertension', 'heart_disease', 'smoking_history', 'bmi', 'HbA1c_level', 'blood_glucose_level']
+    17    378.0 MiB      2.0 MiB           1       custom_df = pd.DataFrame(data, columns=features)
+    18    378.0 MiB      0.0 MiB           1       y_pred = model.predict(custom_df)
+    19    378.0 MiB      0.0 MiB           1       answer = ""
+    20    378.0 MiB      0.0 MiB           1       if y_pred[0] == 1:
+    21                                                 answer = "У вас есть подозрение на диабет"
+    22                                             else:
+    23    378.0 MiB      0.0 MiB           1           answer = "Аномалий не обнаружено"
+    24    378.0 MiB      0.0 MiB           1       return answer
+
+
