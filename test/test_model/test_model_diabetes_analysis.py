@@ -8,7 +8,8 @@ from xgboost import XGBClassifier
 import joblib
 
 
-model = joblib.load('/home/sasha/health_checker/HealthCheck/core/ml/Diabetes_model-2.pkl')
+path = "your project path"
+model = joblib.load(f"{path}/HealthCheck/core/ml/Diabetes_model-2.pkl")
 
 
 def test_loading():
