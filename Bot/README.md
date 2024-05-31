@@ -60,10 +60,26 @@ Machine Learning:
 
 ## Структура проекта:
 · core:
-* handlers:
-  * brain_test.py -- тест для анализа МРТ
+* handlers: -- хэндлеры телеграм бота
+  * brain_test.py -- анализ МРТ
   * change_user_data.py -- изменение данных пользователя
+  * delete_acc.py -- удаление аккаунта
+  * dialogue_with_doctor.py -- переход в диалог с врачем
+  * full_checkup.py -- тест на большое число заболеваний
+  * main_menu.py -- обработчик кнопок главного меню
+  * registration.py -- регистрация пользователя
+  * show_hospital.py -- показ больниц на карте
+  * show_test_results.py -- показать результаты тестов
+  * start.py -- скрипт на команду старт
+  * xray_test.py -- анализ флюорографии
 
+·keyboards:
+  * keyboards.py -- клавиатуры для телеграм бота
+ 
+·ml:
+  * Diabetes_model-2.pkl -- модель для анализа диабета
+  * full_ml.pth -- модель для анализа полного теста
+  * x_ray_effnet_b.h5 -- модель для анализа флюорографии
 
 
 
