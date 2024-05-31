@@ -17,7 +17,7 @@ shell
      
 shell
 
-      python3 -m venv .venv  # Или используйте другой инструмент, например, virtualenv
+      python3 -m venv .venv  
       
    * Активируйте виртуальное окружение:
      
