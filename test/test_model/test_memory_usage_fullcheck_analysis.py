@@ -109,7 +109,7 @@ def fullcheck_analysis(data):
 
 
 def test_memory_usage():
-    df = pd.read_pickle("/home/sasha/health_checker/HealthCheck/test/test_model/data/data_norm0.25.pkl")
+    df = pd.read_pickle(f"{path}/HealthCheck/test/test_model/data/data_norm0.25.pkl")
     df = df[0:2]
     input = df["INPUT"]
     fullcheck_analysis(input[0])
