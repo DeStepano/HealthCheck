@@ -70,7 +70,7 @@ def brain_analysis(image):
     
 
 def test_memory_usage():
-    file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain1.png"
+    file_path = f"{path}/HealthCheck/test/test_model/test_images/brain1.png"
     with open(file_path, 'rb') as file:
         photo = file.read() 
         image = Image.open(io.BytesIO(photo))
