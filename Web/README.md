@@ -23,6 +23,22 @@ API:
 · Яндекс Карты API
 
 
+## Структура проекта:
+
+ health_checker/HealthCheck/
+├── instance
+│   └── hospital.db  # База данных больниц
+├── static
+│   ├── script.js  # Скрипт для отображения больниц на Яндекс Картах
+│   └── style.css  # Стили для страниц
+├── templates
+│   ├── create_hospital.html  # Страница для добавления новой больницы
+│   ├── index.html  # Начальная страница
+│   └── map.html  # Страница с Яндекс Картой
+├── requirements.txt  # Список зависимостей
+└── web_app
+    └── web_app.py  # Flask-сервер для обработки запросов
+
 
 ### Установка
 
