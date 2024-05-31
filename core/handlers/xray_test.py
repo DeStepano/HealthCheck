@@ -49,7 +49,7 @@ async def photo_message(message: Message, state: FSMContext, bot: Bot):
         await state.set_state(States.check_diseases_command)
         await message.answer("Изображение получено, начат анализ")
         file_name = await get_hash_string(data['photo'].file_id)
-        path = f"/home/sasha/health_checker/HealthCheck/images/{file_name + str(uuid.uuid4())}.jpg"
+        path = f"{config.path}HealthCheck/images/{file_name + str(uuid.uuid4())}.jpg"
         await bot.download(
             data['photo'],
             destination=path
