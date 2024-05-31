@@ -70,7 +70,7 @@ bash
 
 ### 4.2. Настройка PostgreSQL
 
-· Следуйте инструкциям по установке PostgreSQL  по ссылке.
+· Следуйте инструкциям по установке PostgreSQL  по ссылке -- https://cloud.vk.com/blog/postgresql-v-ubuntu-kak-ustanovit.
 · Создайте пользователя с правами на создание таблиц:
     
 bash
@@ -86,18 +86,27 @@ CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 · В файле config.yaml Замените your hostname,your port, your_user, your_password и your database name на свои значения (host: 'localhost', port: '5432' -- по умолчанию):
 
 * users_db:
-  * host: 'your hostname'
+  * host: 'your host'
   * port: 'your port'
   * user: 'your user'
   * password: 'your password'
   * database: 'your database name'
 
-## 4.3. Настройка RabbitMQ
+## 5. Настройка RabbitMQ
 
-· Следуйте инструкциям по установке RabbitMQ по ссылке.
+· Установке RabbitMQ, следуя инструкциям -- https://www.rabbitmq.com/docs/install-debian.
 · В файле config.yaml  введите ваш  host  RabbitMQ.
 
-## 5. Запуск
+rpc_client:
+  host: 'your host'
+  queues:
+    brain_queue: brain_queue
+    xray_queue: xray_queue
+    first_check_queue: first_check
+    second_check_queue: second_check
+    fullcheck_queue: fullcheck
+
+## 6. Запуск
 
 ·  Теперь ваш проект HealthCheck готов к запуску. Вы можете использовать следующие команды:
     
