@@ -6,6 +6,9 @@ import pandas as pd
 from memory_profiler import profile
 
 
+path = "your project path"
+
+
 class CustomModel(nn.Module):
     def __init__(self):
         super(CustomModel, self).__init__()
@@ -30,7 +33,7 @@ class CustomModel(nn.Module):
         return x
 
 model_fullcheck = CustomModel()
-model_fullcheck = load('/home/sasha/health_checker/HealthCheck/core/ml/full_ml.pth')
+model_fullcheck = load(f"{path}/HealthCheck/core/ml/full_ml.pth")
 model_fullcheck.eval()
 
 
