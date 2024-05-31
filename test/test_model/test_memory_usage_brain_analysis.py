@@ -8,6 +8,10 @@ from torchvision import models
 from torch import nn
 from memory_profiler import profile
 
+
+path = "your project path"
+
+
 class AdvancedMRI_Classifier(nn.Module):
     def __init__(self, num_classes):
         super(AdvancedMRI_Classifier, self).__init__()
@@ -44,7 +48,7 @@ class AdvancedMRI_Classifier(nn.Module):
         x = self.fc_block(x)
         return x
 model = AdvancedMRI_Classifier(4)
-model.load_state_dict(torch.load('/home/sasha/health_checker/HealthCheck/core/ml/model_28', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load(f"{path}/HealthCheck/core/ml/model_28", map_location=torch.device('cpu')))
 model.eval()
 
 @profile
