@@ -32,7 +32,7 @@ def xray_analysis(image):
 
 
 def test_memory_used():
-    file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/xray1.png"
+    file_path = f"{path}/HealthCheck/test/test_model/test_images/xray1.png"
     with open(file_path, 'rb') as file:
         photo = file.read()
         xray_analysis(photo)
