@@ -13,7 +13,8 @@ import numpy
 import pytest
 
 
-model = tf.keras.models.load_model("/home/sasha/health_checker/HealthCheck/core/ml/x_ray_effnet_b1.h5")
+path = "your project path"
+model = tf.keras.models.load_model(f"{path}/HealthCheck/core/ml/x_ray_effnet_b1.h5")
 
 
 def test_loading():
@@ -21,7 +22,7 @@ def test_loading():
 
 
 def test_first_sample():
-    file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/xray1.png"
+    file_path = f"{path}/HealthCheck/test/test_model/test_images/xray1.png"
     with open(file_path, 'rb') as file:
         photo = file.read()
         image_size = 128
@@ -41,9 +42,9 @@ def test_inference_batch():
     for i in range(1,10):
         file_path = ""
         if i<5:
-            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/xray_test_images/{i}.png"
+            file_path = f"{path}/HealthCheck/test/test_model/test_images/xray_test_images/{i}.png"
         else:
-            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/xray_test_images/{i}.jpg"
+            file_path = f"/{path}/HealthCheck/test/test_model/test_images/xray_test_images/{i}.jpg"
         with open(file_path, 'rb') as file:
             photo = file.read()
             image_size = 128
