@@ -1,0 +1,21 @@
+Filename: /home/sasha/health_checker/HealthCheck/test/test_model/test_memory_usage_fullcheck_analysis.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    92   2890.6 MiB   2890.6 MiB           1   @profile
+    93                                         def fullcheck_analysis(data):
+    94   2893.0 MiB      2.4 MiB           1       out = model_fullcheck.forward(torch.tensor(data).float()).detach().numpy()
+    95   2893.0 MiB      0.0 MiB           1       trashhold = 0.10
+    96   2893.0 MiB      0.0 MiB           1       out = (out>=trashhold).astype(int)
+    97                                         
+    98   2893.0 MiB      0.0 MiB           1       ans = "Под данные симптомы больше всего подпадают данные заболевания: \n"
+    99   2893.0 MiB      0.0 MiB           1       f = True
+   100   2893.0 MiB      0.0 MiB          50       for i in range(49):
+   101   2893.0 MiB      0.0 MiB          49           if out[i] >0:
+   102   2893.0 MiB      0.0 MiB           6               ans+=diseases[i] +' ' + str(round(out[i], 3)) + '\n'
+   103   2893.0 MiB      0.0 MiB           6               f=False
+   104   2893.0 MiB      0.0 MiB           1       if f:
+   105                                                 ans = "Заболевание не определено"
+   106   2893.0 MiB      0.0 MiB           1       return ans
+
+

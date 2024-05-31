@@ -1,0 +1,13 @@
+.map {
+	width: 700px;
+	height: 500px;
+	background-color: #333;
+}
+
+[class*="copyrights-pane"] {
+	display: none !important;
+}
+
+[class*="balloon__close-button"] {
+	opacity: 1;
+}
