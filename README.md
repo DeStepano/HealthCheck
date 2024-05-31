@@ -97,18 +97,25 @@ CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 · Установке RabbitMQ, следуя инструкциям -- https://www.rabbitmq.com/docs/install-debian.
 · В файле config.yaml  введите ваш  host  RabbitMQ.
 
-rpc_client:
-  host: 'your host'
-  queues:
-    brain_queue: brain_queue
-    xray_queue: xray_queue
-    first_check_queue: first_check
-    second_check_queue: second_check
-    fullcheck_queue: fullcheck
+* rpc_client:
+  * host: 'your host'
+  * queues:
+    * brain_queue: brain_queue
+    * xray_queue: xray_queue
+    * first_check_queue: first_check
+    * second_check_queue: second_check
+    * fullcheck_queue: fullcheck
 
 ## 6. Запуск
-
-·  Теперь ваш проект HealthCheck готов к запуску. Вы можете использовать следующие команды:
+Запустите main.py для запуска бота
+Запустите brain_analysis.py для запуска обработки анализов МРТ
+Запустите xray_analysis.py для запуска обработки анализов флюорографии
+Запустите diabetes_analysis.py для запуска обработки анализов на диабет
+Запустите fullcheck_analysis.py для запуска обработки анализов полного теста
     
 bash
-   python main.py  # Запустить бота
+   python3 main.py  # Запустить бота
+   python3 brain_analysis.py
+   python3 xray_analysis.py
+   python3 diabetes_analysis.py
+   python3 fullcheck_analysis.py
