@@ -63,7 +63,7 @@ def test_loading():
 
 
 def test_first_sample():
-    file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain1.png"
+    file_path = f"{path}/HealthCheck/test/test_model/test_images/brain1.png"
     with open(file_path, 'rb') as file:
         photo = file.read()
         image = Image.open(io.BytesIO(photo))
@@ -91,9 +91,9 @@ def test_inference_batch():
         i=i%15
         file_path = ""
         if i<10:
-            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain_test_images/{i}.png"
+            file_path = f"{path}/HealthCheck/test/test_model/test_images/brain_test_images/{i}.png"
         else:
-            file_path = f"/home/sasha/health_checker/HealthCheck/test/test_model/test_images/brain_test_images/{i}.jpeg"
+            file_path = f"{path}/HealthCheck/test/test_model/test_images/brain_test_images/{i}.jpeg"
         with open(file_path, 'rb') as file:
             photo = file.read()
             image = Image.open(io.BytesIO(photo))
