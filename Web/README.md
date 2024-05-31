@@ -26,11 +26,11 @@ API:
 ## Структура проекта:
 
  health_checker/HealthCheck/
-├── instance
-│   └── hospital.db  # База данных больниц
-├── static
-│   ├── script.js  # Скрипт для отображения больниц на Яндекс Картах
-│   └── style.css  # Стили для страниц
+ ├── instance
+ │   └── hospital.db  # База данных больниц
+ ├── static
+ │   ├── script.js  # Скрипт для отображения больниц на Яндекс Картах
+ │   └── style.css  # Стили для страниц
 ├── templates
 │   ├── create_hospital.html  # Страница для добавления новой больницы
 │   ├── index.html  # Начальная страница
