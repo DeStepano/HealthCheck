@@ -1,0 +1,45 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить больницу</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+    </style>
+</head>
+
+
+<div>
+    <h1>Добавить больницу</h1>
+    <form method="post">
+        <input type="text" name="name" id="name" class="form" placeholder="Название больницы">
+        <input type="text" name="disease" id="disease" class="form" placeholder="Специализация">
+        <input type="text" name="city" id="city" class="form" placeholder="Город">
+        <input type="text" name="adress" id="adress" class="form" placeholder="Адрес">
+        <input type="text" name="link" id="link" class="form" placeholder="Ссылка на сайт">
+        <input type="number" name="coord_x" id="coord_x" class="form" placeholder="Координата X" step="0.000001">
+        <input type="number" name="coord_y" id="coord_y" class="form" placeholder="Координата Y" step="0.000001">
+        <input type="submit" value="Отправить">
+    </form>
+</div>
