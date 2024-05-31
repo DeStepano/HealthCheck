@@ -83,8 +83,7 @@ CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 ### Предоставление прав на создание таблиц
    GRANT CREATE TABLE TO your_user;
    
-    * Замените your hostname,your port, your_user, your_password и your database name на свои значения (host: 'localhost', port: '5432' -- по умолчанию).
-· В файле config.yaml  введите:
+· В файле config.yaml Замените your hostname,your port, your_user, your_password и your database name на свои значения (host: 'localhost', port: '5432' -- по умолчанию):
 
 * users_db:
   * host: 'your hostname'
