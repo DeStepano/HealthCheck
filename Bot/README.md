@@ -60,8 +60,9 @@ Machine Learning:
 
 ## Структура проекта:
 · core:
-* ·handlers:
-* brain_test.py -- тест для анализа МРТ
+* handlers:
+* * brain_test.py -- тест для анализа МРТ
+  * change_user_data.py -- изменение данных пользователя
 
 
 
