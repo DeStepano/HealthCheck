@@ -9,6 +9,9 @@ from torch.optim import Adam
 import pandas as pd
 
 
+path = "your project path"
+
+
 class CustomModel(nn.Module):
     def init(self):
         super(CustomModel, self).init()
@@ -35,7 +38,7 @@ class CustomModel(nn.Module):
 model_fullcheck = CustomModel()
 criterion = nn.BCELoss()
 optimizer = Adam(model_fullcheck.parameters())
-model_fullcheck = load('/home/sasha/health_checker/HealthCheck/core/ml/full_ml.pth')
+model_fullcheck = load(f"{path}/HealthCheck/core/ml/full_ml.pth")
 model_fullcheck.eval()
 
 
