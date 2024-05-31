@@ -8,7 +8,9 @@ from xgboost import XGBClassifier
 import joblib
 from memory_profiler import profile
 
-model = joblib.load('/home/sasha/health_checker/HealthCheck/core/ml/Diabetes_model-2.pkl')
+
+path = "your project path"
+model = joblib.load(f"{path}/HealthCheck/core/ml/Diabetes_model-2.pkl")
 
 
 @profile
