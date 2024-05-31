@@ -11,8 +11,36 @@ shell
     git clone https://github.com/ваш_репозиторий.git
    cd health_checker/HealthCheck/web
     
+2. Создание виртуального окружения:
 
-2. Запуск веб-приложения:
+   * Создайте виртуальное окружение Python:
+     
+shell
+
+      python3 -m venv .venv  # Или используйте другой инструмент, например, virtualenv
+      
+   * Активируйте виртуальное окружение:
+     
+shell
+
+      source .venv/bin/activate  # Для Linux/macOS
+      
+     
+powershell
+
+      .venv\Scripts\activate  # Для Windows
+      
+
+3. Установка зависимостей:
+
+   * Установите все необходимые библиотеки из файла requirements.txt:
+     
+shell
+
+      pip install -r requirements.txt
+
+
+4. Запуск веб-приложения:
 
    * Запустите файл web_app.py  с помощью nginx  и gunicorn  или других веб-серверов.
    * Пример с  gunicorn: 
@@ -23,7 +51,7 @@ shell
        
       * Замените  0.0.0.0:8000  на ваш адрес и порт.
 
-3. Настройка SSL-сертификата:
+5. Настройка SSL-сертификата:
 
    * Получите SSL-ключ для вашего подключения с помощью  certbot:
      
