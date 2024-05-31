@@ -1,0 +1,22 @@
+Filename: /home/sasha/health_checker/HealthCheck/test/test_model/test_memory_usage_brain_analysis.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    50    756.8 MiB    756.8 MiB           1   @profile
+    51                                         def brain_analysis(image):
+    52    757.1 MiB      0.4 MiB           1       device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    53    757.1 MiB      0.0 MiB           2       data_transforms = transforms.Compose([
+    54    757.1 MiB      0.0 MiB           1       transforms.Resize((224, 224)),
+    55    757.1 MiB      0.0 MiB           1       transforms.ToTensor(),
+    56    757.1 MiB      0.0 MiB           1       transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    57                                         ])
+    58    760.9 MiB      3.8 MiB           1       image = data_transforms(image)
+    59    760.9 MiB      0.0 MiB           1       image = image.unsqueeze(0)
+    60    760.9 MiB      0.0 MiB           1       if torch.cuda.is_available():
+    61                                                 images=Variable(images.cuda())
+    62    787.6 MiB      0.0 MiB           2       with torch.no_grad():
+    63    787.6 MiB     26.7 MiB           1           output = model(image)
+    64    787.6 MiB      0.0 MiB           1           _,prediction=torch.max(output.data,1)
+    65    787.6 MiB      0.0 MiB           1           return prediction
+
+

@@ -1,0 +1,19 @@
+
+Filename: /home/sasha/health_checker/HealthCheck/test/test_model/test_memory_usage_xray_analysis.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+    17    612.6 MiB    612.6 MiB           1   @profile
+    18                                         def xray_analysis(image):
+    19    612.6 MiB      0.0 MiB           1       image_size = 128
+    20    612.6 MiB      0.0 MiB           1       uploaded = image
+    21    612.6 MiB      0.0 MiB           1       img_np = np.frombuffer(uploaded, np.uint8)
+    22    612.6 MiB      0.0 MiB           1       uploaded_img = cv2.imdecode(img_np, cv2.IMREAD_COLOR)
+    23    612.6 MiB      0.0 MiB           1       resized_image = cv2.resize(uploaded_img, (image_size, image_size))
+    24    612.6 MiB      0.0 MiB           1       predict_in = []
+    25    612.6 MiB      0.0 MiB           1       predict_in.append(resized_image)
+    26    612.6 MiB      0.0 MiB           1       predict_in = np.array(predict_in)  
+    27    659.9 MiB     47.3 MiB           1       prediction = model.predict(predict_in)
+    28    659.9 MiB      0.0 MiB           1       return prediction[0][0]
+
+
