@@ -74,24 +74,24 @@ bash
 · Создайте пользователя с правами на создание таблиц:
     
 bash
-   # Вход в командную строку PostgreSQL
-   sudo -u postgres psql
+## Вход в командную строку PostgreSQL
+sudo -u postgres psql
 
-   # Создание пользователя
-   CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
+## Создание пользователя
+CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 
-   # Предоставление прав на создание таблиц
+## Предоставление прав на создание таблиц
    GRANT CREATE TABLE TO your_user;
-
-   # Выход из командной строки PostgreSQL
-   \q
    
     * Замените  your_user  и  your_password  на нужные значения.
 · В файле config.yaml  введите:
-   *  host:  localhost
-   *  port:  5432
-   *  user:  your_user
-   *  password:  your_password
+
+* users_db:
+  * host: 'localhost'
+  * port: '5432'
+  * user: 'sasha'
+  * password: '123456'
+  * database: 'database'
 
 ## 4.3. Настройка RabbitMQ
 
