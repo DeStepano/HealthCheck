@@ -12,7 +12,10 @@ import os
 import numpy
 from memory_profiler import profile
 
-model = tf.keras.models.load_model("/home/sasha/health_checker/HealthCheck/core/ml/x_ray_effnet_b1.h5")
+
+path = "your project path"
+model = tf.keras.models.load_model(f"{path}/HealthCheck/core/ml/x_ray_effnet_b1.h5")
+
 
 @profile
 def xray_analysis(image):
