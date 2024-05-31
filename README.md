@@ -55,6 +55,7 @@ Machine Learning:
 · PyTorch, TensorFlow, XGBoost
 
 Дополнительные технологии:
+
 · aiogram
 
 
