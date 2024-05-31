@@ -60,7 +60,7 @@ async def create_doctors_table(conn):
         )
 
 
-async def get_doctor_by_disease(name_disease):
+async def get_doctor_by_disease(name_disease: str) -> dict:
     conn = await connect_to_postgres()
     async with conn.transaction():
         cursor = await conn.cursor(f"SELECT COUNT(*) FROM doctors WHERE disease = '{name_disease}'")
@@ -72,17 +72,7 @@ async def get_doctor_by_disease(name_disease):
         return ans
 
 
-async def insert_doctor(data):
-    conn = await connect_to_postgres()
-    async with conn.transaction():
-       for i in data:
-            await conn.execute(
-                "INSERT INTO doctors (username, firstname, surname, city, work_address, name_organization, disease) VALUES ($1, $2, $3, $4, $5, $6, $7)", 
-                 *i
-            )
-
-
-async def insert_data(query, data, user_id):
+async def insert_data(query: str, data: tuple , user_id: int):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -92,7 +82,7 @@ async def insert_data(query, data, user_id):
         )
 
 
-async def get_data_by_id( query, user_id):
+async def get_data_by_id(query: str, user_id: int):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -100,7 +90,7 @@ async def get_data_by_id( query, user_id):
         return row
     
 
-async def check_user( user_id):
+async def check_user(user_id: int) -> bool:
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -111,7 +101,7 @@ async def check_user( user_id):
             return False
         
 
-async def check_data(query, user_id):
+async def check_data(query: str, user_id: int) -> bool:
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -122,7 +112,7 @@ async def check_data(query, user_id):
             return False
         
 
-async def delete_user(user_id):
+async def delete_user(user_id: int):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -137,7 +127,7 @@ async def drop_table(conn):
         await conn.execute(f"DROP TABLE IF EXISTS users")
 
 
-async def insert_array(array, user_id):
+async def insert_array(array: list, user_id: int):
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     json_array = json.dumps({"numbers": array})
@@ -148,7 +138,7 @@ async def insert_array(array, user_id):
         )
 
 
-async def get_array(user_id):
+async def get_array(user_id: int) -> list:
     conn = await connect_to_postgres()
     key, additional_key = await get_hash(user_id)
     async with conn.transaction():
@@ -156,5 +146,7 @@ async def get_array(user_id):
         array = json.loads(res[0])["numbers"]
         return array
 
+        
+    
         
     
