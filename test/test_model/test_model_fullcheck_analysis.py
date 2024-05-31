@@ -47,7 +47,7 @@ def test_loading():
 
 
 def test_first_sample():
-    df = pd.read_pickle("/home/sasha/health_checker/HealthCheck/test/test_model/data/data_norm0.25.pkl")
+    df = pd.read_pickle(f"{path}/HealthCheck/test/test_model/data/data_norm0.25.pkl")
     df = df[0:2]
     input = df["INPUT"]
     output = df["OUTPUT"]
