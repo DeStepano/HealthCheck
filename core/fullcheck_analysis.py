@@ -22,9 +22,9 @@ class CustomModel(nn.Module):
         self.relu = nn.ReLU()
         self.fc2 = nn.Linear(989, 989)
         self.relu = nn.ReLU()
-        self.fc3 = nn.Linear(989, 256)
+        self.fc3 = nn.Linear(989, 989)
         self.relu = nn.ReLU()
-        self.fc4 = nn.Linear(256, 49)
+        self.fc4 = nn.Linear(989, 49)
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
@@ -105,7 +105,7 @@ def fullcheck_analysis(data):
     f = True
     for i in range(49):
         if out[i] >0:
-            ans+=diseases[i] +' ' + str(round(out[i], 3)) + '\n'
+            ans+=diseases[i] +' ' + '\n'
             f=False
     if f:
         ans = "Заболевание не определено"
