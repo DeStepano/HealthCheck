@@ -140,10 +140,15 @@ CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 
 ## 6. Запуск
 Запустите main.py для запуска бота
+
 Запустите brain_analysis.py для запуска обработки анализов МРТ
+
 Запустите xray_analysis.py для запуска обработки анализов флюорографии
+
 Запустите diabetes_analysis.py для запуска обработки анализов на диабет
+
 Запустите fullcheck_analysis.py для запуска обработки анализов полного теста
+
     
 bash
    python3 main.py  # Запустить бота
