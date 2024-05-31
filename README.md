@@ -5,28 +5,22 @@
 
 ## Используемые технологии
 
-Проект HealthCheck  использует следующие технологии:
 
 Backend:
 
-· Python
-· Flask:
-· SQLAlchemy:  ORM (объектно-реляционное отображение) для взаимодействия с базами данных.
+· Python, Flask, SQLAlchemy,
 
 Frontend:
 
-· HTML:
-· CSS:
-· JavaScript: 
+· HTML, CSS, JavaScript: 
 
 Инфраструктура:
 
-· Nginx:  Веб-сервер для обслуживания веб-приложения.
-· Gunicorn:  Веб-сервер WSGI для запуска Flask-приложения.
+· Nginx, Gunicorn
 
 API:
 
-· Яндекс Карты API:  API для отображения карты больниц.
+· Яндекс Карты API
 
 
 
