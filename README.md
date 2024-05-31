@@ -56,22 +56,6 @@ Machine Learning:
 Дополнительные технологии:
 · aiogram
 
-## Запуск проекта:
-
-1. Установите необходимые зависимости:
-   ```bash
-   pip install -r requirements.txt
-Запустите сервер:
-
-2. Копировать код
-    python3 main.py
-
-3. Для анализа медицинских изображений и данных используйте:
-    python3 brain_analysis.py
-    python3 xray_analysis.py
-    python3 diabetes_analysis.py
-    python3 fullcheck_analysis.py
-
 Цель данной части: написать нейронную сеть, которая будет способна прогнозировать возможные заболевания у человека по подробному описанию его симптомов.
 
 Изначальные данные были представлены в тяжелом для анализа виде (https://huggingface.co/datasets/aai530-group6/ddxplus-french). Данные можно преобразовать в удобный вид с помощью Parquet (https://parquet.apache.org).
