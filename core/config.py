@@ -1,8 +1,10 @@
 import yaml
 
+path = "your project path"
+
 class Config(object):
     def __init__(self):
-        with open("/home/sasha/health_checker/HealthCheck/core/config.yaml", "r") as file:
+        with open(f"{path}HealthCheck/core/config.yaml", "r") as file:
             data = yaml.safe_load(file)
             self.token = data['TOKEN']  
             self.rpc_client = data['rpc_client'] 
