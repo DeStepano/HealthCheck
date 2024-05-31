@@ -151,8 +151,8 @@ CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
 
     
 bash
-   python3 main.py  # Запустить бота
-   python3 brain_analysis.py
-   python3 xray_analysis.py
-   python3 diabetes_analysis.py
-   python3 fullcheck_analysis.py
+   * python3 main.py  # Запустить бота
+   * python3 brain_analysis.py
+   * python3 xray_analysis.py
+   * python3 diabetes_analysis.py
+   * python3 fullcheck_analysis.py
