@@ -27,4 +27,80 @@ https://www.rabbitmq.com - RabbitMQ
 
 
 Гайд по установке:  
-Coming soon!
+Этот гайд поможет вам установить и настроить проект HealthCheck.
+
+### 1. Скачивание репозитория
+
+· Клонируйте репозиторий HealthCheck:
+    
+bash
+   git clone https://github.com/ваш_репозиторий.git   cd health_checker/HealthCheck
+   
+ 
+### 2. Создание виртуального окружения
+
+· Создайте виртуальное окружение Python:
+    
+bash
+   python3 -m venv .venv  # Или используйте другой инструмент, например, virtualenv   
+ · Активируйте виртуальное окружение:
+    
+bash
+   source .venv/bin/activate  # Для Linux/macOS
+   
+     
+bash
+   .venv\Scripts\activate  # Для Windows
+   
+ 
+### 3. Установка зависимостей
+
+· Установите все необходимые библиотеки из файла requirements.txt:
+    
+bash
+   pip install -r requirements.txt
+   
+ 
+### 4. Настройка конфигурации
+
+#### 4.1. Изменение пути
+
+· Откройте файлы config.yaml и config.py.
+· Измените значение path  на путь к директории, где расположен проект.
+
+#### 4.2. Настройка PostgreSQL
+
+· Следуйте инструкциям по установке PostgreSQL  по ссылке.
+· Создайте пользователя с правами на создание таблиц:
+    
+bash
+   # Вход в командную строку PostgreSQL
+   sudo -u postgres psql
+
+   # Создание пользователя
+   CREATE ROLE your_user WITH LOGIN PASSWORD 'your_password';
+
+   # Предоставление прав на создание таблиц
+   GRANT CREATE TABLE TO your_user;
+
+   # Выход из командной строки PostgreSQL
+   \q
+   
+    * Замените  your_user  и  your_password  на нужные значения.
+· В файле config.yaml  введите:
+   *  host:  localhost
+   *  port:  5432
+   *  user:  your_user
+   *  password:  your_password
+
+#### 4.3. Настройка RabbitMQ
+
+· Следуйте инструкциям по установке RabbitMQ по ссылке.
+· В файле config.yaml  введите ваш  host  RabbitMQ.
+
+### 5. Запуск
+
+·  Теперь ваш проект HealthCheck готов к запуску. Вы можете использовать следующие команды:
+    
+bash
+   python main.py  # Запустить бота
