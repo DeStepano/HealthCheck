@@ -58,6 +58,14 @@ Machine Learning:
 
 · aiogram
 
+## Структура проекта:
+· core:
+* ·handlers:
+* brain_test.py -- тест для анализа МРТ
+
+
+
+
 
 # Гайд по установке телеграм бота:  
 
